@@ -1,0 +1,48 @@
+name: Update Wenjie Dashboard Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 1 * * *"
+    - cron: "0 6 * * *"
+    - cron: "0 13 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate and normalize dashboard data
+        run: |
+          python scripts/update_events.py \
+            --input wenjie-sentiment-dashboard/data/wenjie-sentiment-events.json \
+            --output wenjie-sentiment-dashboard/data/wenjie-sentiment-events.json \
+            --touch-updated-at \
+            --check-urls \
+            --strict
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add wenjie-sentiment-dashboard/data/wenjie-sentiment-events.json
+          git add scripts/update_events.py
+          git commit -m "chore: refresh wenjie dashboard data"
+          git push
