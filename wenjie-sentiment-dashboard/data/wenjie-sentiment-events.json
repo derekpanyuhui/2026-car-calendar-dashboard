@@ -1,11 +1,11 @@
 {
   "meta": {
     "title": "问界汽车舆情看板",
-    "updatedAt": "2026-04-02T08:57:03+08:00",
+    "updatedAt": "2026-04-02T09:35:03+08:00",
     "updateFrequency": "建议每日 09:30 / 14:00 / 21:00 巡检，重大争议事件即时增量更新",
     "sourcePolicy": "品牌官方 > 合作方官方 > 权威媒体 > 行业媒体",
     "scope": "覆盖问界品牌、问界 M5、问界 M6、问界 M7、问界 M8、问界 M9；仅保留能回链到具体正文页、具体声明页或单篇活动页的真实事件。",
-    "version": "2026.04.02-live-refresh-v4"
+    "version": "2026.04.02-live-discovery-v5"
   },
   "events": [
     {
@@ -96,6 +96,62 @@
       "suggestedAction": "后续需尽快用锁单、交付和上险数据做二次验证，避免订单口径孤立传播。"
     },
     {
+      "id": "auto-m6-20260322-ithome-439",
+      "publishedAt": "2026-03-22T12:11:47+08:00",
+      "capturedAt": "2026-04-02T09:33:15+08:00",
+      "entity": "M6",
+      "model": "问界 M6",
+      "title": "鸿蒙智行问界 M6 内饰官图发布：前排配“会转头”随动屏、后排有吸顶娱乐屏，明启预订",
+      "summary": "从官图可以看到，问界 M6 配备可左右转动的中控随动屏，副驾处有灵感橱窗。新车后排还配有触控面板、冰箱，并提供后排吸顶娱乐屏选配。#鸿蒙智行# #问界 M6#",
+      "category": "新品动态",
+      "sentiment": "positive",
+      "riskLevel": "medium",
+      "riskReason": "标题或摘要命中升级、预售、订单、收费或传闻类关键词，自动归类为中风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/931/439.htm",
+      "keywords": [
+        "问界",
+        "鸿蒙智行",
+        "M6",
+        "预订"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 AITO 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
+      "id": "auto-m6-20260322-ithome-381",
+      "publishedAt": "2026-03-22T09:33:32+08:00",
+      "capturedAt": "2026-04-02T09:33:16+08:00",
+      "entity": "M6",
+      "model": "问界 M6",
+      "title": "鸿蒙智行“新锐智慧 SUV”问界 M6 首批展车明日起陆续到店：全国 90 个城市、200+ 门店",
+      "summary": "AITO 汽车官方微博今日宣布，鸿蒙智行“新锐智慧 SUV”问界 M6 首批展车将自 3 月 23 日起陆续到店，覆盖全国 90 个城市、200+ 门店。#问界 M6# #鸿蒙智行#",
+      "category": "交付跟踪",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/931/381.htm",
+      "keywords": [
+        "问界",
+        "AITO",
+        "鸿蒙智行",
+        "M6"
+      ],
+      "impactScope": "用户信心、交付预期、转化效率",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 AITO 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "m7-cati-rating-20260320",
       "publishedAt": "2026-03-20T15:20:37+08:00",
       "capturedAt": "2026-04-02T08:53:38+08:00",
@@ -123,6 +179,33 @@
       "status": "signal",
       "traceability": "直达新浪科技正文页；报道对应单篇测试结果，不是聚合页。",
       "suggestedAction": "建议与配置争议、用户口碑等负向事件一起看，避免单点信息割裂。"
+    },
+    {
+      "id": "auto-m6-20260319-ithome-753",
+      "publishedAt": "2026-03-19T18:48:01+08:00",
+      "capturedAt": "2026-04-02T09:33:16+08:00",
+      "entity": "M6",
+      "model": "问界 M6",
+      "title": "最高纯电续航 760km，鸿蒙智行问界 M6 续航信息出炉",
+      "summary": "工信部目录曝光问界全新 M6 车型的详细续航信息。新车将提供增程和纯电两种动力，增程版 CLTC 纯电续航最高 272km，纯电版最高达 760km。新车采用双电机四驱，轴距 2950mm，定位中大型 SUV，将于 3 月 23 日正式发布。",
+      "category": "新品动态",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/930/753.htm",
+      "keywords": [
+        "问界",
+        "鸿蒙智行",
+        "M6"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
     },
     {
       "id": "m6-preorder-20260316",
@@ -183,6 +266,33 @@
       "suggestedAction": "适合与成交均价、交付规模一起使用，强化 M9 的高端价值心智。"
     },
     {
+      "id": "auto-m6-20260309-ithome-130",
+      "publishedAt": "2026-03-09T11:12:37+08:00",
+      "capturedAt": "2026-04-02T09:33:17+08:00",
+      "entity": "M6",
+      "model": "问界 M6",
+      "title": "鸿蒙智行公布问界 M6“钛空银”配色：流动的液态钛金属质感",
+      "summary": "官方介绍，这款配色如流动的液态钛金属，“未来感”直接披上身。当车身线条流动，光影也随之跃动，比寻常车色多出 30% 的丰富变幻，无论在哪都自带新锐气场。",
+      "category": "新品动态",
+      "sentiment": "neutral",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/927/130.htm",
+      "keywords": [
+        "问界",
+        "鸿蒙智行",
+        "M6"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "m9-radar-upgrade-20260305",
       "publishedAt": "2026-03-05T10:45:49+08:00",
       "capturedAt": "2026-04-02T08:53:40+08:00",
@@ -239,6 +349,89 @@
       "status": "watch",
       "traceability": "直达北京商报正文页；发布日期以 URL 日期和正文页归档。",
       "suggestedAction": "需同步终端订单、后续上市节奏与交付解释口径，避免单月波动被放大为长期趋势。"
+    },
+    {
+      "id": "auto-brand-20260301-ithome-745",
+      "publishedAt": "2026-03-01T10:37:00+08:00",
+      "capturedAt": "2026-04-02T09:33:17+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "鸿蒙智行春节华为乾崑 ADS 出行报告发布，辅助驾驶活跃用户占比超九成",
+      "summary": "鸿蒙智行官方昨日发布了春节华为乾崑 ADS 出行报告。据介绍，春节路上，超 9 成用户爱用辅助驾驶，华为乾崑智驾 ADS 还主动避免可能的碰撞 8.1 万次。#鸿蒙智行#",
+      "category": "新品动态",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/924/745.htm",
+      "keywords": [
+        "鸿蒙智行",
+        "华为"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
+      "id": "auto-brand-20260226-ithome-008",
+      "publishedAt": "2026-02-26T21:04:44+08:00",
+      "capturedAt": "2026-04-02T09:33:18+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "赛力斯康波：AITO 问界在阿联酋斩获 200 台首批订单，实现中东市场开门红",
+      "summary": "赛力斯集团副总裁康波今日宣布，AITO 问界汽车在阿联酋斩获 200 台首批订单，实现中东市场开门红。目前阿联酋本地适配车型已在有序排产中，车辆完成生产后将发运交付。#AITO 问界出海阿联酋#",
+      "category": "交付跟踪",
+      "sentiment": "positive",
+      "riskLevel": "medium",
+      "riskReason": "标题或摘要命中升级、预售、订单、收费或传闻类关键词，自动归类为中风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/924/008.htm",
+      "keywords": [
+        "问界",
+        "AITO",
+        "赛力斯",
+        "订单",
+        "交付",
+        "出海"
+      ],
+      "impactScope": "用户信心、交付预期、转化效率",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 AITO 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
+      "id": "auto-brand-20260225-ithome-551",
+      "publishedAt": "2026-02-25T15:29:48+08:00",
+      "capturedAt": "2026-04-02T09:34:50+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "赛力斯副总裁康波晒 2026 问界汽车春节出行报告：辅助驾驶总里程 3.3 亿公里，占比 46.6%",
+      "summary": "据介绍，今年春节，问界汽车行驶 8.2 亿公里，增程里程 3.8 亿公里，辅助驾驶总里程 3.3 亿公里，辅助驾驶里程占比 46.6%，春节出行保障服务 17935 次。#问界# #赛力斯#",
+      "category": "服务权益",
+      "sentiment": "neutral",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/923/551.htm",
+      "keywords": [
+        "问界",
+        "赛力斯",
+        "服务"
+      ],
+      "impactScope": "用户满意度、服务口碑、留存复购",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
     },
     {
       "id": "brand-average-transaction-20260203",

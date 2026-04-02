@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import html
 import json
 import re
@@ -93,6 +94,19 @@ class DateCandidate:
     precision: int
 
 
+@dataclass(frozen=True)
+class DiscoveryCandidate:
+    url: str
+    title: str
+    summary: str
+    published_at: str | None
+    source_type: str
+    source_tier: str
+    source_name: str
+    publisher: str
+    discovery_source: str
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True, help="Input seed json path")
@@ -113,6 +127,28 @@ def parse_args() -> argparse.Namespace:
         help="Replace manual event.title with the fetched page title when available",
     )
     parser.add_argument(
+        "--discover",
+        action="store_true",
+        help="Discover new candidate events from configured official/media sources before refresh",
+    )
+    parser.add_argument(
+        "--sync-input",
+        action="store_true",
+        help="Write refreshed seed events back to the input file after discovery",
+    )
+    parser.add_argument(
+        "--discover-days",
+        type=int,
+        default=45,
+        help="Only keep newly discovered events whose publishedAt is within this many days when available",
+    )
+    parser.add_argument(
+        "--discover-max-new",
+        type=int,
+        default=10,
+        help="Maximum number of newly discovered events to append in one run",
+    )
+    parser.add_argument(
         "--strict",
         action="store_true",
         help="Exit with status 1 when warnings or errors are found",
@@ -126,6 +162,63 @@ def now_shanghai_iso() -> str:
 
 def load_dataset(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def discover_events(
+    dataset: dict[str, Any],
+    discover_days: int,
+    discover_max_new: int,
+) -> tuple[dict[str, Any], int]:
+    existing_urls = {
+        normalize_url_for_compare(event.get("url", ""))
+        for event in dataset.get("events", [])
+        if event.get("url")
+    }
+    discovered_candidates = discover_candidates()
+    scored_candidates: list[tuple[int, datetime, DiscoveryCandidate]] = []
+
+    for candidate in discovered_candidates:
+        normalized_url = normalize_url_for_compare(candidate.url)
+        if normalized_url in existing_urls:
+            continue
+
+        candidate_dt = parse_datetime(candidate.published_at) if candidate.published_at else None
+        if candidate_dt and age_in_days(candidate_dt) > discover_days:
+            continue
+
+        scored_candidates.append((source_priority(candidate), candidate_dt or datetime.min.replace(tzinfo=SHANGHAI_TZ), candidate))
+
+    scored_candidates.sort(key=lambda item: (item[0], item[1]), reverse=True)
+
+    new_events = []
+    existing_ids = {event.get("id", "") for event in dataset.get("events", [])}
+    for _, _, candidate in scored_candidates:
+        if len(new_events) >= discover_max_new:
+            break
+
+        seed_event = build_seed_event_from_candidate(candidate, existing_ids)
+        refreshed_event, _ = refresh_event(seed_event, prefer_live_title=True)
+        published_dt = parse_datetime(refreshed_event.get("publishedAt"))
+        if published_dt is None:
+            continue
+        if published_dt and age_in_days(published_dt) > discover_days:
+            continue
+
+        normalized_url = normalize_url_for_compare(refreshed_event["url"])
+        if normalized_url in existing_urls:
+            continue
+
+        existing_ids.add(refreshed_event["id"])
+        existing_urls.add(normalized_url)
+        new_events.append(refreshed_event)
+        print(f"DISCOVER [{refreshed_event['id']}]: {refreshed_event['title']}")
+
+    if not new_events:
+        return dataset, 0
+
+    next_dataset = copy.deepcopy(dataset)
+    next_dataset["events"] = list(dataset.get("events", [])) + new_events
+    return next_dataset, len(new_events)
 
 
 def collect_events(dataset: dict[str, Any], prefer_live_title: bool) -> list[dict[str, Any]]:
@@ -142,6 +235,191 @@ def collect_events(dataset: dict[str, Any], prefer_live_title: bool) -> list[dic
 
     print(f"Refreshed {len(events)} events from live source pages; {changed_count} changed.")
     return events
+
+
+def discover_candidates() -> list[DiscoveryCandidate]:
+    candidates: list[DiscoveryCandidate] = []
+    candidates.extend(discover_from_huawei_search())
+    candidates.extend(discover_from_xinhua_auto())
+    candidates.extend(discover_from_ithome_tags())
+    candidates.extend(discover_from_aito_sitemap())
+    return dedupe_candidates(candidates)
+
+
+def discover_from_huawei_search() -> list[DiscoveryCandidate]:
+    website_id = "36eacc0c64c54804827c3f4922e87328"
+    keywords = ["问界", "赛力斯", "AITO", "鸿蒙智行", "引望"]
+    candidates: list[DiscoveryCandidate] = []
+
+    for keyword in keywords:
+        payload = {
+            "websiteId": website_id,
+            "searchTxt": keyword,
+            "pageNum": 1,
+            "pageSize": 20,
+            "customParam": {"site": "cn", "type": "news"},
+        }
+        try:
+            response = post_json_via_curl(
+                "https://www.huawei.com/hwp_ai_isearch_service/msc/hwp_ai_isearch_search_public?searchService=www-search",
+                payload,
+            )
+        except RuntimeError as error:
+            print(f"WARN [discover-huawei-search:{keyword}]: {error}")
+            continue
+
+        for item in response.get("data", {}).get("data", []):
+            title = clean_title(item.get("title", ""))
+            summary = clean_html_text(item.get("description")) or ""
+            if not is_relevant_text(f"{title} {summary}"):
+                continue
+
+            host_name = item.get("hostName", "")
+            source_meta = map_huawei_host(host_name)
+            if not source_meta:
+                continue
+
+            raw_url = item.get("url", "")
+            if not raw_url:
+                continue
+
+            url = raw_url if raw_url.startswith("http") else f"https://{raw_url}"
+            candidates.append(
+                DiscoveryCandidate(
+                    url=url,
+                    title=title,
+                    summary=summary,
+                    published_at=parse_date_candidate(item.get("releaseFormatTime")).iso if item.get("releaseFormatTime") else None,
+                    source_type="official",
+                    source_tier=source_meta["source_tier"],
+                    source_name=source_meta["source_name"],
+                    publisher=source_meta["publisher"],
+                    discovery_source=f"华为官网搜索接口 / 关键词 {keyword}",
+                )
+            )
+
+    return candidates
+
+
+def discover_from_xinhua_auto() -> list[DiscoveryCandidate]:
+    try:
+        page = fetch_page("https://www.news.cn/auto/")
+    except RuntimeError as error:
+        print(f"WARN [discover-xinhua]: {error}")
+        return []
+
+    candidates: list[DiscoveryCandidate] = []
+    pattern = re.compile(
+        r'<div class="item item-style1">.*?<a href="(?P<href>[^"]+/c\.html)".*?<div class="tit"><a [^>]*>(?P<title>.*?)</a></div>.*?<div class="time">(?P<date>\d{4}-\d{2}-\d{2})</div>',
+        flags=re.DOTALL,
+    )
+    for match in pattern.finditer(page.body):
+        title = clean_html_text(match.group("title")) or ""
+        if not is_relevant_text(title):
+            continue
+
+        href = match.group("href")
+        url = href if href.startswith("http") else f"https://www.news.cn{href}"
+        candidates.append(
+            DiscoveryCandidate(
+                url=url,
+                title=title,
+                summary="",
+                published_at=parse_date_candidate(match.group("date")).iso if match.group("date") else None,
+                source_type="media",
+                source_tier="权威媒体",
+                source_name="新华网",
+                publisher="新华网",
+                discovery_source="新华汽车列表页",
+            )
+        )
+
+    return candidates
+
+
+def discover_from_ithome_tags() -> list[DiscoveryCandidate]:
+    sources = [
+        ("https://www.ithome.com/tags/AITO/", "IT之家 AITO 标签页"),
+        ("https://www.ithome.com/tags/%E9%97%AE%E7%95%8C/", "IT之家 问界 标签页"),
+    ]
+    candidates: list[DiscoveryCandidate] = []
+    pattern = re.compile(
+        r'<div class="c" data-ot="(?P<date>[^"]+)">.*?<a title="(?P<title>[^"]+)" target="_blank" href="(?P<href>https://www\.ithome\.com/0/\d+/\d+\.htm)" class="title">.*?</a>.*?<div class="m">(?P<summary>.*?)</div>',
+        flags=re.DOTALL,
+    )
+
+    for url, label in sources:
+        try:
+            page = fetch_page(url)
+        except RuntimeError as error:
+            print(f"WARN [discover-ithome:{label}]: {error}")
+            continue
+
+        for match in pattern.finditer(page.body):
+            title = clean_html_text(match.group("title")) or ""
+            summary = clean_html_text(match.group("summary")) or ""
+            if not is_relevant_text(f"{title} {summary}"):
+                continue
+            candidates.append(
+                DiscoveryCandidate(
+                    url=match.group("href"),
+                    title=title,
+                    summary=summary,
+                    published_at=parse_date_candidate(match.group("date")).iso if match.group("date") else None,
+                    source_type="media",
+                    source_tier="行业媒体",
+                    source_name="IT之家",
+                    publisher="IT之家",
+                    discovery_source=label,
+                )
+            )
+
+    return candidates
+
+
+def discover_from_aito_sitemap() -> list[DiscoveryCandidate]:
+    try:
+        xml_text = fetch_text("https://aito.auto/sitemap.xml")
+    except RuntimeError as error:
+        print(f"WARN [discover-aito-sitemap]: {error}")
+        return []
+
+    candidates: list[DiscoveryCandidate] = []
+    pattern = re.compile(
+        r"<url>\s*<loc>(?P<loc>https://aito\.auto/news/[^<]+)</loc>\s*<lastmod>(?P<lastmod>\d{4}-\d{2}-\d{2})</lastmod>",
+        flags=re.DOTALL,
+    )
+    for match in pattern.finditer(xml_text):
+        url = match.group("loc")
+        if detect_weak_url(url):
+            continue
+        if not re.search(r"/news/.*(m5|m6|m7|m8|m9|aito|harmonyos|cockpit)", url, flags=re.IGNORECASE):
+            continue
+        title = title_from_url_slug(url)
+        candidates.append(
+            DiscoveryCandidate(
+                url=url,
+                title=title,
+                summary="",
+                published_at=parse_date_candidate(match.group("lastmod")).iso if match.group("lastmod") else None,
+                source_type="official",
+                source_tier="品牌官方",
+                source_name="AITO 官网",
+                publisher="AITO",
+                discovery_source="AITO sitemap",
+            )
+        )
+    return candidates
+
+
+def dedupe_candidates(candidates: list[DiscoveryCandidate]) -> list[DiscoveryCandidate]:
+    by_url: dict[str, DiscoveryCandidate] = {}
+    for candidate in candidates:
+        key = normalize_url_for_compare(candidate.url)
+        current = by_url.get(key)
+        if current is None or source_priority(candidate) > source_priority(current):
+            by_url[key] = candidate
+    return list(by_url.values())
 
 
 def refresh_event(event: dict[str, Any], prefer_live_title: bool) -> tuple[dict[str, Any], set[str]]:
@@ -167,6 +445,15 @@ def refresh_event(event: dict[str, Any], prefer_live_title: bool) -> tuple[dict[
         refreshed["title"] = live_title
         changes.add("title")
 
+    live_summary = extract_live_summary(page)
+    if (
+        refreshed.get("status") == "pending-review"
+        and live_summary
+        and live_summary != refreshed.get("summary")
+    ):
+        refreshed["summary"] = live_summary
+        changes.add("summary")
+
     live_published = extract_published_at(page)
     chosen_published = choose_published_at(refreshed.get("publishedAt"), live_published)
     if chosen_published and chosen_published != refreshed.get("publishedAt"):
@@ -178,6 +465,39 @@ def refresh_event(event: dict[str, Any], prefer_live_title: bool) -> tuple[dict[
         changes.add("capturedAt")
 
     return refreshed, changes
+
+
+def build_seed_event_from_candidate(candidate: DiscoveryCandidate, existing_ids: set[str]) -> dict[str, Any]:
+    entity, model = infer_entity_and_model(candidate.title, candidate.summary)
+    category = infer_category(candidate.title, candidate.summary)
+    sentiment = infer_sentiment(candidate.title, candidate.summary)
+    risk_level = infer_risk_level(candidate.title, candidate.summary)
+    published_at = candidate.published_at
+    event_id = build_event_id(entity, published_at, candidate.url, existing_ids)
+
+    return {
+        "id": event_id,
+        "publishedAt": published_at,
+        "capturedAt": now_shanghai_iso(),
+        "entity": entity,
+        "model": model,
+        "title": candidate.title,
+        "summary": candidate.summary or f"{candidate.source_name}出现与{model}相关的新增事件，建议人工补充摘要。",
+        "category": category,
+        "sentiment": sentiment,
+        "riskLevel": risk_level,
+        "riskReason": infer_risk_reason(risk_level, candidate),
+        "sourceType": candidate.source_type,
+        "sourceTier": candidate.source_tier,
+        "sourceName": candidate.source_name,
+        "publisher": candidate.publisher,
+        "url": candidate.url,
+        "keywords": infer_keywords(candidate.title, candidate.summary, entity),
+        "impactScope": infer_impact_scope(category, sentiment),
+        "status": "pending-review",
+        "traceability": f"自动发现：{candidate.discovery_source} -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+        "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。",
+    }
 
 
 def normalize_events(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -271,6 +591,73 @@ def fetch_page(url: str) -> FetchedPage:
     return page
 
 
+def fetch_text(url: str) -> str:
+    command = [
+        "curl",
+        "-L",
+        "--silent",
+        "--show-error",
+        "--compressed",
+        "--retry",
+        "2",
+        "--retry-delay",
+        "1",
+        "--max-time",
+        str(FETCH_TIMEOUT_SECONDS),
+        "--user-agent",
+        USER_AGENT,
+        url,
+    ]
+    result = subprocess.run(
+        command,
+        check=False,
+        capture_output=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.strip() or "curl exited with non-zero status")
+    return result.stdout
+
+
+def post_json_via_curl(url: str, payload: dict[str, Any]) -> dict[str, Any]:
+    command = [
+        "curl",
+        "-L",
+        "--silent",
+        "--show-error",
+        "--compressed",
+        "--retry",
+        "2",
+        "--retry-delay",
+        "1",
+        "--max-time",
+        str(FETCH_TIMEOUT_SECONDS),
+        "--user-agent",
+        USER_AGENT,
+        "-H",
+        "Content-Type: application/json",
+        "-X",
+        "POST",
+        "--data",
+        json.dumps(payload, ensure_ascii=False),
+        url,
+    ]
+    result = subprocess.run(
+        command,
+        check=False,
+        capture_output=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.strip() or "curl exited with non-zero status")
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError as error:
+        raise RuntimeError("JSON 响应解析失败") from error
+
+
 def extract_live_title(page: FetchedPage) -> str | None:
     host = hostname_for(page.final_url)
     html_text = page.body
@@ -295,6 +682,17 @@ def extract_live_title(page: FetchedPage) -> str | None:
     if not title:
         return None
     return clean_title(title)
+
+
+def extract_live_summary(page: FetchedPage) -> str | None:
+    summary = first_clean_match(
+        page.body,
+        [
+            r'<meta[^>]+name=["\']description["\'][^>]+content=["\'](.*?)["\']',
+            r'<meta[^>]+property=["\']og:description["\'][^>]+content=["\'](.*?)["\']',
+        ],
+    )
+    return clean_html_text(summary)
 
 
 def extract_published_at(page: FetchedPage) -> DateCandidate | None:
@@ -460,6 +858,169 @@ def clean_title(title: str) -> str:
     return re.sub(r"\s+", " ", cleaned).strip()
 
 
+def infer_entity_and_model(title: str, summary: str) -> tuple[str, str]:
+    text = normalize_relevance_text(f"{title} {summary}")
+    rules = [
+        (r"问界\s*新?\s*M5|M5 Ultra|问界M5|问界 M5", ("M5", "问界 M5")),
+        (r"问界\s*M6|问界M6", ("M6", "问界 M6")),
+        (r"问界\s*新?\s*M7|问界M7|问界 M7", ("M7", "问界 M7")),
+        (r"问界\s*M8|问界M8", ("M8", "问界 M8")),
+        (r"问界\s*M9|问界M9", ("M9", "问界 M9")),
+    ]
+    for pattern, value in rules:
+        if re.search(pattern, text, flags=re.IGNORECASE):
+            return value
+    return "brand", "问界品牌"
+
+
+def infer_category(title: str, summary: str) -> str:
+    text = normalize_relevance_text(f"{title} {summary}")
+    mapping = [
+        (r"争议|维权|投诉|事故|召回|老款|问题", "争议事件"),
+        (r"官图|内饰|配色|续航|曝光", "新品动态"),
+        (r"交付|下线|到店", "交付跟踪"),
+        (r"订单|大定|预订|预售", "订单跟踪"),
+        (r"上市|发布|官图|亮相", "新品动态"),
+        (r"OTA|升级|雷达|鸿蒙座舱|智驾", "功能升级"),
+        (r"保值率|测评|得分|榜首|冠军", "口碑背书"),
+        (r"合作|签署|战略|联盟|生态", "合作动态"),
+        (r"服务|用户中心|救援|权益", "服务权益"),
+        (r"海外|阿联酋|出海", "海外市场"),
+    ]
+    for pattern, category in mapping:
+        if re.search(pattern, text, flags=re.IGNORECASE):
+            return category
+    return "动态跟踪"
+
+
+def infer_sentiment(title: str, summary: str) -> str:
+    text = normalize_relevance_text(f"{title} {summary}")
+    if re.search(r"争议|维权|投诉|事故|召回|老款|问题", text, flags=re.IGNORECASE):
+        return "negative"
+    if re.search(r"升级|收费|观望|传闻|待确认", text, flags=re.IGNORECASE):
+        return "mixed"
+    if re.search(r"交付|订单|发布|上市|官图|联盟|冠军|榜首|得分|到店|出海|OTA", text, flags=re.IGNORECASE):
+        return "positive"
+    return "neutral"
+
+
+def infer_risk_level(title: str, summary: str) -> str:
+    text = normalize_relevance_text(f"{title} {summary}")
+    if re.search(r"争议|维权|投诉|事故|召回", text, flags=re.IGNORECASE):
+        return "high"
+    if re.search(r"升级|收费|传闻|观望|预订|预售|订单|老款|问题", text, flags=re.IGNORECASE):
+        return "medium"
+    return "low"
+
+
+def infer_risk_reason(risk_level: str, candidate: DiscoveryCandidate) -> str:
+    base = {
+        "high": "标题或摘要命中争议 / 事故 / 投诉类关键词，自动归类为高风险待复核事件。",
+        "medium": "标题或摘要命中升级、预售、订单、收费或传闻类关键词，自动归类为中风险待复核事件。",
+        "low": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。",
+    }[risk_level]
+    return f"{base} 来源主体为{candidate.publisher}，建议人工确认最终定性。"
+
+
+def infer_keywords(title: str, summary: str, entity: str) -> list[str]:
+    text = normalize_relevance_text(f"{title} {summary}")
+    candidates = [
+        "问界", "AITO", "鸿蒙智行", "赛力斯", "华为", "引望",
+        "M5", "M6", "M7", "M8", "M9",
+        "订单", "交付", "上市", "预订", "OTA", "升级", "保值率", "测评", "服务", "权益", "出海",
+    ]
+    found = [item for item in candidates if re.search(re.escape(item), text, flags=re.IGNORECASE)]
+    if entity != "brand" and entity not in found:
+        found.insert(0, entity)
+    return found[:8] if found else ["问界", "新增事件"]
+
+
+def infer_impact_scope(category: str, sentiment: str) -> str:
+    mapping = {
+        "争议事件": "车主情绪、社媒讨论、订单稳定性",
+        "交付跟踪": "用户信心、交付预期、转化效率",
+        "订单跟踪": "传播热度、潜客线索、销量预期",
+        "新品动态": "新品关注度、舆论热度、潜客决策",
+        "功能升级": "老车主预期、体验口碑、技术讨论",
+        "口碑背书": "高端心智、用户信任、媒体引用",
+        "合作动态": "品牌背书、生态协同、资本认知",
+        "服务权益": "用户满意度、服务口碑、留存复购",
+        "海外市场": "品牌国际化认知、渠道信心、市场想象",
+        "动态跟踪": "品牌热度、用户关注、后续跟踪",
+    }
+    if sentiment == "negative" and category != "争议事件":
+        return "社媒情绪、品牌口碑、业务应对"
+    return mapping.get(category, "品牌热度、用户关注、后续跟踪")
+
+
+def build_event_id(entity: str, published_at: str, url: str, existing_ids: set[str]) -> str:
+    date_value = parse_datetime(published_at)
+    date_part = date_value.strftime("%Y%m%d") if date_value else "undated"
+    host = hostname_for(url).replace("www.", "").split(".")[0]
+    match = re.search(r"/(\d{3,})\.htm?$", url) or re.search(r"/([^/]+?)(?:\.html?|/)?$", url)
+    tail = re.sub(r"[^a-z0-9]+", "-", (match.group(1) or "").lower()).strip("-")[:24] or hashlib.sha1(url.encode("utf-8")).hexdigest()[:8]
+    base = f"auto-{entity.lower()}-{date_part}-{host}-{tail}"
+    candidate = base
+    counter = 2
+    while candidate in existing_ids:
+        candidate = f"{base}-{counter}"
+        counter += 1
+    return candidate
+
+
+def source_priority(candidate: DiscoveryCandidate) -> int:
+    tier_order = {
+        "品牌官方": 4,
+        "合作方官方": 3,
+        "权威媒体": 2,
+        "行业媒体": 1,
+    }
+    return tier_order.get(candidate.source_tier, 0)
+
+
+def map_huawei_host(host_name: str) -> dict[str, str] | None:
+    mapping = {
+        "集团官网": {
+            "source_tier": "合作方官方",
+            "source_name": "华为官网",
+            "publisher": "华为",
+        },
+        "数字能源官网": {
+            "source_tier": "合作方官方",
+            "source_name": "华为数字能源",
+            "publisher": "华为数字能源",
+        },
+        "终端官网": {
+            "source_tier": "合作方官方",
+            "source_name": "华为终端官网",
+            "publisher": "华为终端",
+        },
+    }
+    return mapping.get(host_name)
+
+
+def is_relevant_text(text: str) -> bool:
+    return bool(re.search(r"问界|AITO|鸿蒙智行|赛力斯|引望", normalize_relevance_text(text), flags=re.IGNORECASE))
+
+
+def age_in_days(value: datetime) -> int:
+    return int((now_shanghai_dt() - value).total_seconds() // 86400)
+
+
+def now_shanghai_dt() -> datetime:
+    return datetime.now(SHANGHAI_TZ)
+
+
+def title_from_url_slug(url: str) -> str:
+    slug = url.rstrip("/").split("/")[-1]
+    slug = re.sub(r"-\d{8}$", "", slug)
+    return clean_title(slug.replace("-", " "))
+
+
+def normalize_relevance_text(text: str) -> str:
+    return re.sub(r"\s+", "", text or "")
+
+
 def parse_date_candidate(raw: str | None) -> DateCandidate | None:
     if not raw:
         return None
@@ -483,6 +1044,8 @@ def parse_date_candidate(raw: str | None) -> DateCandidate | None:
         .replace("/", "-")
         .replace("T", "T")
     )
+    normalized = re.sub(r"(\d{2}:\d{2}:\d{2})\.\d+(?=[+-])", r"\1", normalized)
+    normalized = re.sub(r"(\d{2}:\d{2}:\d{2})\.\d+$", r"\1", normalized)
     normalized = re.sub(r"\s+", " ", normalized).strip()
 
     candidates = [cleaned, normalized]
@@ -692,7 +1255,21 @@ def main() -> int:
     output_path = Path(args.output)
 
     dataset = load_dataset(input_path)
-    dataset["events"] = normalize_events(collect_events(dataset, prefer_live_title=args.prefer_live_title))
+    discovered_count = 0
+    if args.discover:
+        dataset, discovered_count = discover_events(
+            dataset,
+            discover_days=args.discover_days,
+            discover_max_new=args.discover_max_new,
+        )
+        print(f"Discovered {discovered_count} new events.")
+
+    refreshed_events = normalize_events(collect_events(dataset, prefer_live_title=args.prefer_live_title))
+    dataset["events"] = refreshed_events
+
+    if args.sync_input:
+        input_snapshot = copy.deepcopy(dataset)
+        write_dataset(input_path, input_snapshot)
 
     if args.touch_updated_at:
         dataset.setdefault("meta", {})["updatedAt"] = now_shanghai_iso()

@@ -29,6 +29,8 @@ jobs:
           python scripts/update_events.py \
             --input wenjie-sentiment-dashboard/data/wenjie-sentiment-seeds.json \
             --output wenjie-sentiment-dashboard/data/wenjie-sentiment-events.json \
+            --discover \
+            --sync-input \
             --touch-updated-at \
             --check-urls \
             --strict
