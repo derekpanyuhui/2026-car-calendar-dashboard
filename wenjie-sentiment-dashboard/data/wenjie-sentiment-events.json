@@ -1,13 +1,43 @@
 {
   "meta": {
     "title": "问界汽车舆情看板",
-    "updatedAt": "2026-04-15T18:40:56+08:00",
+    "updatedAt": "2026-04-16T00:17:56+08:00",
     "updateFrequency": "建议每日 09:30 / 14:00 / 21:00 巡检，重大争议事件即时增量更新",
     "sourcePolicy": "品牌官方 > 合作方官方 > 权威媒体 > 行业媒体",
     "scope": "覆盖问界品牌、问界 M5、问界 M6、问界 M7、问界 M8、问界 M9；仅保留能回链到具体正文页、具体声明页或单篇活动页的真实事件。",
     "version": "2026.04.02-live-discovery-v5"
   },
   "events": [
+    {
+      "id": "auto-m6-20260415-ithome-606",
+      "publishedAt": "2026-04-15T20:10:00+08:00",
+      "capturedAt": "2026-04-16T00:17:31+08:00",
+      "entity": "M6",
+      "model": "问界 M6",
+      "title": "华为 Pura 下周一炸场，周三还有六张王牌",
+      "summary": "华为官宣鸿蒙智行春季新品发布会定档 4 月 22 日，将带来尚界 Z7/Z7T、问界 M6、智界 V9 及全新一代问界 M9 系列共六款新车。其中全新 M9 系列尺寸更大、动力升级，或推 Ultimate 顶配版本。这场发布会将与 4 月 20 日的 Pura 系列发布会共同构成华为下周的“双响炮”。#华为鸿蒙智行# #问界 M9#",
+      "category": "新品动态",
+      "sentiment": "mixed",
+      "riskLevel": "medium",
+      "riskReason": "标题或摘要命中升级、预售、订单、收费或传闻类关键词，自动归类为中风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/939/606.htm",
+      "keywords": [
+        "问界",
+        "鸿蒙智行",
+        "华为",
+        "M6",
+        "M9",
+        "升级"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
     {
       "id": "auto-m7-20260412-ithome-335",
       "publishedAt": "2026-04-12T19:35:53+08:00",
