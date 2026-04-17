@@ -9,6 +9,33 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260417-ithome-453",
+      "publishedAt": "2026-04-17T16:41:51+08:00",
+      "capturedAt": "2026-04-17T22:15:05+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "赛力斯加入宝马和奔驰超充合资公司逸安启，问界享预约充电、功率优先分配等专属权益",
+      "summary": "宝马与梅赛德斯-奔驰在中国成立的超充合资公司逸安启今日宣布，赛力斯作为新的投资方加入公司，与现有股东方持股比例相等。",
+      "category": "服务权益",
+      "sentiment": "neutral",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/940/453.htm",
+      "keywords": [
+        "问界",
+        "赛力斯",
+        "权益"
+      ],
+      "impactScope": "用户满意度、服务口碑、留存复购",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-m6-20260415-ithome-606",
       "publishedAt": "2026-04-15T20:10:00+08:00",
       "capturedAt": "2026-04-16T00:17:31+08:00",
