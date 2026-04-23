@@ -9,6 +9,32 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260423-ithome-773",
+      "publishedAt": "2026-04-23T18:45:46+08:00",
+      "capturedAt": "2026-04-23T23:06:54+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "Brand Finance 发布 2026 全球汽车品牌价值 100 强：比亚迪中国第一、问界独闯豪车 TOP10",
+      "summary": "Brand Finance 公布了 2026 全球汽车品牌价值 100 强。#赛力斯#副总裁康波宣布，#问界#以 34.48 亿美元品牌价值位居中国豪华汽车品牌价值第一，成为豪华汽车 TOP10 唯一中国品牌。",
+      "category": "新品动态",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/942/773.htm",
+      "keywords": [
+        "问界",
+        "赛力斯"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260417-ithome-453",
       "publishedAt": "2026-04-17T16:41:51+08:00",
       "capturedAt": "2026-04-17T22:15:05+08:00",
