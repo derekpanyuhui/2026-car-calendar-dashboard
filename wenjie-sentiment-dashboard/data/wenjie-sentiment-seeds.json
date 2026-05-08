@@ -9,6 +9,32 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260508-ithome-614",
+      "publishedAt": "2026-05-08T11:29:42+08:00",
+      "capturedAt": "2026-05-08T12:41:31+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "赛力斯：2025 年增程器市场份额达 37.5%，位居行业第一",
+      "summary": "2025 年中国增程器装机量 120.1 万台，赛力斯以 37.5% 的市占率从理想手中夺下榜首。同时，问界辅助驾驶累计里程达 66.3 亿公里，2026 年一季度赛力斯汽车销量同比增长 55.6%。#新能源汽车##赛力斯#",
+      "category": "口碑背书",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/947/614.htm",
+      "keywords": [
+        "问界",
+        "赛力斯"
+      ],
+      "impactScope": "高端心智、用户信任、媒体引用",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260506-ithome-970",
       "publishedAt": "2026-05-06T18:38:48+08:00",
       "capturedAt": "2026-05-06T23:19:22+08:00",
