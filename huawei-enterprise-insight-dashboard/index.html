@@ -1,0 +1,1753 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>华为企业信息洞察仪表盘</title>
+  <meta
+    name="description"
+    content="可外部分享的华为企业信息洞察仪表盘，聚合战略、经营、合作、活动、高层交流与组织变动。"
+  >
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/png;base64,">
+  <style>
+:root {
+  --bg: #f7f5f1;
+  --bg-soft: #f0ede8;
+  --surface: rgba(255, 255, 255, 0.82);
+  --surface-strong: #ffffff;
+  --line: rgba(26, 36, 52, 0.08);
+  --line-strong: rgba(26, 36, 52, 0.14);
+  --text: #172231;
+  --muted: #627085;
+  --muted-soft: #7c889b;
+  --brand: #c7000b;
+  --brand-soft: #ffe4e6;
+  --blue: #4278ff;
+  --teal: #11a7a2;
+  --amber: #e58e16;
+  --violet: #5a63d8;
+  --green: #1f9a4d;
+  --shadow-lg: 0 28px 70px rgba(38, 51, 77, 0.11);
+  --shadow-md: 0 18px 40px rgba(38, 51, 77, 0.08);
+  --radius-xl: 32px;
+  --radius-lg: 24px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --page-width: 1520px;
+  --font-display: "Avenir Next Condensed", "DIN Alternate", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --transition: 220ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--font-body);
+  background:
+    radial-gradient(circle at top right, rgba(66, 120, 255, 0.12), transparent 26%),
+    radial-gradient(circle at top left, rgba(199, 0, 11, 0.08), transparent 22%),
+    linear-gradient(180deg, #fbfaf8 0%, #f3f0ea 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(23, 34, 49, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 34, 49, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 88%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.page-shell {
+  width: min(calc(100% - 24px), var(--page-width));
+  margin: 12px auto;
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar,
+.hero-card,
+.panel,
+.filter-card,
+.kpi-card {
+  backdrop-filter: blur(22px);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+}
+
+.sidebar {
+  position: sticky;
+  top: 12px;
+  align-self: start;
+  min-height: calc(100vh - 24px);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 245, 239, 0.85));
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.brand-block {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  text-align: center;
+}
+
+.brand-block img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.brand-block strong {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+
+.brand-block span,
+.sidebar-label,
+#dataRefreshLabel {
+  color: var(--muted-soft);
+  font-size: 11px;
+}
+
+.side-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.side-link {
+  padding: 12px 10px;
+  border-radius: 14px;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.side-link:hover,
+.side-link.is-active {
+  color: var(--brand);
+  background: linear-gradient(135deg, rgba(199, 0, 11, 0.08), rgba(66, 120, 255, 0.08));
+}
+
+.sidebar-foot {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.main-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.hero-card {
+  border-radius: 36px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(251, 248, 243, 0.88)),
+    linear-gradient(135deg, rgba(199, 0, 11, 0.05), rgba(66, 120, 255, 0.08));
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+}
+
+.hero-copy {
+  padding: 42px 40px 34px;
+}
+
+.hero-kicker,
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.hero-copy h1 {
+  margin: 14px 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(42px, 5vw, 68px);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+
+.hero-copy p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.primary-button,
+.secondary-button,
+.ghost-button,
+.inline-button,
+.filter-button,
+.timeline-link {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.primary-button,
+.inline-button {
+  color: #fff;
+  background: linear-gradient(135deg, #df1d28, #c7000b);
+  box-shadow: 0 12px 26px rgba(199, 0, 11, 0.22);
+}
+
+.secondary-button,
+.inline-button.secondary {
+  color: var(--text);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.ghost-button {
+  color: var(--brand);
+  border-color: rgba(199, 0, 11, 0.18);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.ghost-button:hover,
+.inline-button:hover,
+.filter-button:hover,
+.timeline-link:hover {
+  transform: translateY(-1px);
+}
+
+.hero-visual {
+  position: relative;
+  min-height: 300px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.02)),
+    url("data:image/png;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPG1ldGEgY2hhcnNldD0idXRmLTgiPgo8dGl0bGU+V2lraW1lZGlhIEVycm9yPC90aXRsZT4KPHN0eWxlPgoqIHsgbWFyZ2luOiAwOyBwYWRkaW5nOiAwOyB9CmJvZHkgeyBiYWNrZ3JvdW5kOiAjZmZmOyBmb250OiAxNXB4LzEuNiBzYW5zLXNlcmlmOyBjb2xvcjogIzMzMzsgfQouY29udGVudCB7IG1hcmdpbjogNyUgYXV0byAwOyBwYWRkaW5nOiAyZW0gMWVtIDFlbTsgbWF4LXdpZHRoOiA2NDBweDsgZGlzcGxheTogZmxleDsgZmxleC1kaXJlY3Rpb246IHJvdzsgZmxleC13cmFwOiB3cmFwOyB9Ci5mb290ZXIgeyBjbGVhcjogYm90aDsgbWFyZ2luLXRvcDogMTQlOyBib3JkZXItdG9wOiAxcHggc29saWQgI2U1ZTVlNTsgYmFja2dyb3VuZDogI2Y5ZjlmOTsgcGFkZGluZzogMmVtIDA7IGZvbnQtc2l6ZTogMC44ZW07IHRleHQtYWxpZ246IGNlbnRlcjsgfQppbWcgeyBtYXJnaW46IDAgMmVtIDJlbSAwOyB9CmEgaW1nIHsgYm9yZGVyOiAwOyB9CmgxIHsgbWFyZ2luLXRvcDogMWVtOyBmb250LXNpemU6IDEuMmVtOyB9Ci5jb250ZW50LXRleHQgeyBmbGV4OiAxOyB9CnAgeyBtYXJnaW46IDAuN2VtIDAgMWVtIDA7IH0KYSB7IGNvbG9yOiAjMDY0NWFkOyB0ZXh0LWRlY29yYXRpb246IG5vbmU7IH0KYTpob3ZlciB7IHRleHQtZGVjb3JhdGlvbjogdW5kZXJsaW5lOyB9CmNvZGUgeyBmb250LWZhbWlseTogc2Fucy1zZXJpZjsgfQpzdW1tYXJ5IHsgZm9udC13ZWlnaHQ6IGJvbGQ7IGN1cnNvcjogcG9pbnRlcjsgfQpkZXRhaWxzW29wZW5dIHsgYmFja2dyb3VuZDogIzk3MDMwMjsgY29sb3I6ICNkZmRlZGQ7IH0KLnRleHQtbXV0ZWQgeyBjb2xvcjogIzc3NzsgfQpAbWVkaWEgKHByZWZlcnMtY29sb3Itc2NoZW1lOiBkYXJrKSB7CiAgYSB7IGNvbG9yOiAjOWU5ZWZmOyB9CiAgYm9keSB7IGJhY2tncm91bmQ6IHRyYW5zcGFyZW50OyBjb2xvcjogI2RkZDsgfQogIC5mb290ZXIgeyBib3JkZXItdG9wOiAxcHggc29saWQgIzQ0NDsgYmFja2dyb3VuZDogIzA2MDYwNjsgfQogICNsb2dvIHsgZmlsdGVyOiBpbnZlcnQoMSkgaHVlLXJvdGF0ZSgxODBkZWcpOyB9CiAgLnRleHQtbXV0ZWQgeyBjb2xvcjogIzg4ODsgfQp9Cjwvc3R5bGU+CjxtZXRhIG5hbWU9ImNvbG9yLXNjaGVtZSIgY29udGVudD0ibGlnaHQgZGFyayI+CjxkaXYgY2xhc3M9ImNvbnRlbnQiIHJvbGU9Im1haW4iPgo8YSBocmVmPSJodHRwczovL3d3dy53aWtpbWVkaWEub3JnIj48aW1nIGlkPSJsb2dvIiBzcmM9Imh0dHBzOi8vd3d3Lndpa2ltZWRpYS5vcmcvc3RhdGljL2ltYWdlcy93bWYtbG9nby5wbmciIHNyY3NldD0iaHR0cHM6Ly93d3cud2lraW1lZGlhLm9yZy9zdGF0aWMvaW1hZ2VzL3dtZi1sb2dvLTJ4LnBuZyAyeCIgYWx0PSJXaWtpbWVkaWEiIHdpZHRoPSIxMzUiIGhlaWdodD0iMTAxIj4KPC9hPgo8ZGl2IGNsYXNzPSJjb250ZW50LXRleHQiPgo8aDE+RXJyb3I8L2gxPgoKPHA+VXNlIHRodW1ibmFpbCBzdGVwcyBsaXN0ZWQgb24gaHR0cHM6Ly93Lndpa2kvR0hhaS4gUGxlYXNlIGNvbnRhY3Qgbm9jQHdpa2ltZWRpYS5vcmcgZm9yIGZ1cnRoZXIgaW5mb3JtYXRpb24gKGE3NjU5MTMpPC9wPgo8L2Rpdj4KPC9kaXY+CjxkaXYgY2xhc3M9ImZvb3RlciI+PHA+SWYgeW91IHJlcG9ydCB0aGlzIGVycm9yIHRvIHRoZSBXaWtpbWVkaWEgU3lzdGVtIEFkbWluaXN0cmF0b3JzLCBwbGVhc2UgaW5jbHVkZSB0aGUgZGV0YWlscyBiZWxvdy48L3A+PHAgY2xhc3M9InRleHQtbXV0ZWQiPjxjb2RlPlJlcXVlc3Qgc2VydmVkIHZpYSBjcDQwNDggY3A0MDQ4LCBWYXJuaXNoIFhJRCAxNzU0MzA0MTY8YnI+VXBzdHJlYW0gY2FjaGVzOiBjcDQwNDggaW50PGJyPkVycm9yOiA0MjksIFVzZSB0aHVtYm5haWwgc3RlcHMgbGlzdGVkIG9uIGh0dHBzOi8vdy53aWtpL0dIYWkuIFBsZWFzZSBjb250YWN0IG5vY0B3aWtpbWVkaWEub3JnIGZvciBmdXJ0aGVyIGluZm9ybWF0aW9uIChhNzY1OTEzKSBhdCBUdWUsIDE3IE1hciAyMDI2IDAzOjQxOjA3IEdNVDxicj48ZGV0YWlscz48c3VtbWFyeT5TZW5zaXRpdmUgY2xpZW50IGluZm9ybWF0aW9uPC9zdW1tYXJ5PklQIGFkZHJlc3M6IDM4LjkyLjIxNC4xOTU8L2RldGFpbHM+PC9jb2RlPjwvcD4KPC9kaXY+CjwvaHRtbD4K") no-repeat right 40px top 34px / 88px,
+    linear-gradient(120deg, rgba(66, 120, 255, 0.09), rgba(199, 0, 11, 0.08));
+}
+
+.hero-toolbar {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 22px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  z-index: 2;
+}
+
+.toolbar-chip,
+.toolbar-avatar {
+  min-height: 38px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-md);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.toolbar-chip {
+  padding: 0 14px;
+}
+
+.toolbar-search {
+  min-width: 240px;
+  justify-content: flex-start;
+}
+
+.toolbar-search::before {
+  content: "⌕";
+  margin-right: 8px;
+  color: var(--muted-soft);
+}
+
+.toolbar-avatar {
+  width: 38px;
+  color: #fff;
+  background: linear-gradient(135deg, #df1d28, #c7000b);
+}
+
+.hero-building {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.building-glow {
+  position: absolute;
+  inset: 40px 28px 32px 72px;
+  border-radius: 24px 0 0 24px;
+  background:
+    linear-gradient(180deg, rgba(66, 120, 255, 0.16), rgba(66, 120, 255, 0.03)),
+    radial-gradient(circle at 38% 18%, rgba(255, 255, 255, 0.86), transparent 32%),
+    linear-gradient(135deg, rgba(143, 167, 199, 0.35), rgba(235, 239, 244, 0.18));
+  clip-path: polygon(10% 18%, 88% 18%, 97% 34%, 97% 86%, 5% 86%, 5% 40%);
+}
+
+.building-glow::before,
+.building-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.building-glow::before {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+  background-size: 54px 54px;
+  opacity: 0.54;
+}
+
+.building-glow::after {
+  inset: auto 0 0 0;
+  height: 26%;
+  background: linear-gradient(180deg, rgba(116, 132, 152, 0), rgba(92, 113, 140, 0.28));
+}
+
+.building-card {
+  position: absolute;
+  left: 42px;
+  bottom: 28px;
+  width: min(280px, calc(100% - 80px));
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: var(--shadow-md);
+}
+
+.building-card span,
+.kpi-card span,
+.unit-card .eyeline,
+.share-card span,
+.legend-row span,
+.region-item span,
+.breakdown-item span {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-soft);
+}
+
+.building-card strong {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 48px;
+  line-height: 1;
+}
+
+.building-card p,
+.share-card p,
+.timeline-summary,
+.stack-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kpi-card {
+  border-radius: 24px;
+  padding: 18px 18px 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(249, 246, 241, 0.88));
+}
+
+.kpi-card strong {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 42px;
+  line-height: 1;
+}
+
+.kpi-foot {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.delta.is-up { color: var(--brand); }
+.delta.is-down { color: var(--green); }
+.delta.is-flat { color: var(--amber); }
+
+.filter-card,
+.panel {
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(248, 245, 240, 0.86));
+  padding: 24px;
+}
+
+.section-heading,
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+}
+
+.panel-head.compact {
+  align-items: start;
+}
+
+.section-heading h2,
+.panel-head h2,
+.panel-head h3 {
+  margin: 8px 0 0;
+  font-size: 24px;
+  letter-spacing: -0.03em;
+}
+
+.section-heading p,
+.panel-meta,
+.timeline-meta,
+.unit-subline,
+.legend-row,
+.region-item,
+.breakdown-item {
+  color: var(--muted);
+}
+
+.filter-groups {
+  margin-top: 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.filter-group {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.filter-label {
+  padding-top: 10px;
+  color: var(--muted-soft);
+  font-size: 13px;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-button {
+  min-height: 38px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.78);
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.filter-button.is-active {
+  color: var(--brand);
+  border-color: rgba(199, 0, 11, 0.22);
+  background: linear-gradient(135deg, rgba(199, 0, 11, 0.08), rgba(66, 120, 255, 0.08));
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.78fr);
+  gap: 18px;
+}
+
+.panel-timeline {
+  min-height: 780px;
+}
+
+.timeline-list,
+.stack-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.timeline-item,
+.stack-card,
+.unit-card,
+.share-card {
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.timeline-item {
+  padding: 18px;
+}
+
+.timeline-top,
+.timeline-foot,
+.unit-card-head,
+.unit-card-foot,
+.stack-card-head,
+.stack-card-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.timeline-date,
+.timeline-meta,
+.timeline-keywords,
+.stack-card-foot {
+  color: var(--muted-soft);
+  font-size: 13px;
+}
+
+.timeline-tags,
+.timeline-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag,
+.keyword-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.tag.is-official,
+.keyword-chip {
+  color: var(--blue);
+  background: rgba(66, 120, 255, 0.08);
+}
+
+.tag.is-media { color: var(--amber); background: rgba(229, 142, 22, 0.1); }
+.tag.is-high { color: var(--brand); background: rgba(199, 0, 11, 0.08); }
+.tag.is-medium { color: #9a5c00; background: rgba(245, 184, 79, 0.16); }
+.tag.is-low { color: var(--green); background: rgba(31, 154, 77, 0.1); }
+
+.timeline-title {
+  margin: 14px 0 10px;
+  font-size: 22px;
+  line-height: 1.34;
+  letter-spacing: -0.03em;
+}
+
+.timeline-link {
+  min-height: 38px;
+  color: var(--brand);
+  border-color: rgba(199, 0, 11, 0.16);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.panel-block-gap {
+  margin-top: 22px;
+}
+
+.stack-card {
+  padding: 16px;
+}
+
+.stack-card strong {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.stack-card-foot {
+  margin-top: 12px;
+}
+
+.unit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.unit-card {
+  padding: 18px;
+}
+
+.unit-card .eyeline {
+  margin-bottom: 8px;
+}
+
+.unit-card h3 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.unit-subline {
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.unit-metric {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.unit-metric strong {
+  font-family: var(--font-display);
+  font-size: 42px;
+  line-height: 1;
+}
+
+.sparkline {
+  width: 96px;
+  height: 38px;
+}
+
+.sparkline path.line {
+  fill: none;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sparkline path.area {
+  opacity: 0.12;
+}
+
+.lower-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.98fr) minmax(300px, 0.72fr);
+  gap: 18px;
+}
+
+.network-shell {
+  margin-top: 18px;
+  display: grid;
+  gap: 18px;
+}
+
+.network-canvas {
+  position: relative;
+  min-height: 350px;
+  border-radius: 24px;
+  border: 1px dashed rgba(66, 120, 255, 0.16);
+  background:
+    radial-gradient(circle at center, rgba(66, 120, 255, 0.08), transparent 62%),
+    rgba(255, 255, 255, 0.62);
+  overflow: hidden;
+}
+
+.network-center,
+.network-node {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.network-center {
+  left: 50%;
+  top: 50%;
+  width: 108px;
+  height: 108px;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  background: radial-gradient(circle at 30% 30%, #ef3d46, #b80009 70%);
+  box-shadow: 0 16px 40px rgba(199, 0, 11, 0.26);
+}
+
+.network-node {
+  width: 82px;
+  height: 82px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.network-node strong {
+  display: block;
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.network-line {
+  position: absolute;
+  height: 2px;
+  transform-origin: left center;
+  opacity: 0.48;
+}
+
+.network-legend {
+  display: grid;
+  gap: 10px;
+}
+
+.legend-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid var(--line);
+}
+
+.legend-row strong,
+.region-item strong,
+.breakdown-item strong {
+  font-size: 16px;
+}
+
+.heat-content {
+  margin-top: 18px;
+  display: grid;
+  gap: 16px;
+}
+
+.region-bars,
+.source-breakdown {
+  display: grid;
+  gap: 12px;
+}
+
+.region-item,
+.breakdown-item {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid var(--line);
+}
+
+.bar-track {
+  height: 10px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: rgba(23, 34, 49, 0.08);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(199, 0, 11, 0.62), rgba(66, 120, 255, 0.8));
+}
+
+.sharing-cards {
+  margin-top: 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.share-card {
+  padding: 18px;
+}
+
+.share-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.share-card .inline-button {
+  margin-top: 14px;
+}
+
+.empty-state {
+  padding: 24px;
+  border-radius: 18px;
+  text-align: center;
+  border: 1px dashed var(--line-strong);
+  color: var(--muted);
+}
+
+@media (max-width: 1320px) {
+  .kpi-strip,
+  .unit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lower-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1120px) {
+  .page-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    min-height: auto;
+    display: grid;
+    gap: 16px;
+  }
+
+  .side-nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .hero-card,
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .page-shell {
+    width: min(calc(100% - 16px), var(--page-width));
+    margin: 8px auto;
+  }
+
+  .sidebar {
+    padding: 14px;
+  }
+
+  .brand-block {
+    grid-template-columns: 40px 1fr;
+    align-items: center;
+    justify-items: start;
+    text-align: left;
+  }
+
+  .brand-block img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-copy,
+  .filter-card,
+  .panel {
+    padding: 18px;
+  }
+
+  .hero-copy h1 {
+    font-size: 38px;
+  }
+
+  .kpi-strip,
+  .unit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-group {
+    grid-template-columns: 1fr;
+  }
+
+  .side-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-toolbar {
+    position: static;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 16px 18px 0;
+  }
+
+  .toolbar-search {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .hero-visual {
+    min-height: 220px;
+  }
+
+  .timeline-title {
+    font-size: 18px;
+  }
+}
+
+</style>
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <img src="data:image/png;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPG1ldGEgY2hhcnNldD0idXRmLTgiPgo8dGl0bGU+V2lraW1lZGlhIEVycm9yPC90aXRsZT4KPHN0eWxlPgoqIHsgbWFyZ2luOiAwOyBwYWRkaW5nOiAwOyB9CmJvZHkgeyBiYWNrZ3JvdW5kOiAjZmZmOyBmb250OiAxNXB4LzEuNiBzYW5zLXNlcmlmOyBjb2xvcjogIzMzMzsgfQouY29udGVudCB7IG1hcmdpbjogNyUgYXV0byAwOyBwYWRkaW5nOiAyZW0gMWVtIDFlbTsgbWF4LXdpZHRoOiA2NDBweDsgZGlzcGxheTogZmxleDsgZmxleC1kaXJlY3Rpb246IHJvdzsgZmxleC13cmFwOiB3cmFwOyB9Ci5mb290ZXIgeyBjbGVhcjogYm90aDsgbWFyZ2luLXRvcDogMTQlOyBib3JkZXItdG9wOiAxcHggc29saWQgI2U1ZTVlNTsgYmFja2dyb3VuZDogI2Y5ZjlmOTsgcGFkZGluZzogMmVtIDA7IGZvbnQtc2l6ZTogMC44ZW07IHRleHQtYWxpZ246IGNlbnRlcjsgfQppbWcgeyBtYXJnaW46IDAgMmVtIDJlbSAwOyB9CmEgaW1nIHsgYm9yZGVyOiAwOyB9CmgxIHsgbWFyZ2luLXRvcDogMWVtOyBmb250LXNpemU6IDEuMmVtOyB9Ci5jb250ZW50LXRleHQgeyBmbGV4OiAxOyB9CnAgeyBtYXJnaW46IDAuN2VtIDAgMWVtIDA7IH0KYSB7IGNvbG9yOiAjMDY0NWFkOyB0ZXh0LWRlY29yYXRpb246IG5vbmU7IH0KYTpob3ZlciB7IHRleHQtZGVjb3JhdGlvbjogdW5kZXJsaW5lOyB9CmNvZGUgeyBmb250LWZhbWlseTogc2Fucy1zZXJpZjsgfQpzdW1tYXJ5IHsgZm9udC13ZWlnaHQ6IGJvbGQ7IGN1cnNvcjogcG9pbnRlcjsgfQpkZXRhaWxzW29wZW5dIHsgYmFja2dyb3VuZDogIzk3MDMwMjsgY29sb3I6ICNkZmRlZGQ7IH0KLnRleHQtbXV0ZWQgeyBjb2xvcjogIzc3NzsgfQpAbWVkaWEgKHByZWZlcnMtY29sb3Itc2NoZW1lOiBkYXJrKSB7CiAgYSB7IGNvbG9yOiAjOWU5ZWZmOyB9CiAgYm9keSB7IGJhY2tncm91bmQ6IHRyYW5zcGFyZW50OyBjb2xvcjogI2RkZDsgfQogIC5mb290ZXIgeyBib3JkZXItdG9wOiAxcHggc29saWQgIzQ0NDsgYmFja2dyb3VuZDogIzA2MDYwNjsgfQogICNsb2dvIHsgZmlsdGVyOiBpbnZlcnQoMSkgaHVlLXJvdGF0ZSgxODBkZWcpOyB9CiAgLnRleHQtbXV0ZWQgeyBjb2xvcjogIzg4ODsgfQp9Cjwvc3R5bGU+CjxtZXRhIG5hbWU9ImNvbG9yLXNjaGVtZSIgY29udGVudD0ibGlnaHQgZGFyayI+CjxkaXYgY2xhc3M9ImNvbnRlbnQiIHJvbGU9Im1haW4iPgo8YSBocmVmPSJodHRwczovL3d3dy53aWtpbWVkaWEub3JnIj48aW1nIGlkPSJsb2dvIiBzcmM9Imh0dHBzOi8vd3d3Lndpa2ltZWRpYS5vcmcvc3RhdGljL2ltYWdlcy93bWYtbG9nby5wbmciIHNyY3NldD0iaHR0cHM6Ly93d3cud2lraW1lZGlhLm9yZy9zdGF0aWMvaW1hZ2VzL3dtZi1sb2dvLTJ4LnBuZyAyeCIgYWx0PSJXaWtpbWVkaWEiIHdpZHRoPSIxMzUiIGhlaWdodD0iMTAxIj4KPC9hPgo8ZGl2IGNsYXNzPSJjb250ZW50LXRleHQiPgo8aDE+RXJyb3I8L2gxPgoKPHA+VXNlIHRodW1ibmFpbCBzdGVwcyBsaXN0ZWQgb24gaHR0cHM6Ly93Lndpa2kvR0hhaS4gUGxlYXNlIGNvbnRhY3Qgbm9jQHdpa2ltZWRpYS5vcmcgZm9yIGZ1cnRoZXIgaW5mb3JtYXRpb24gKGE3NjU5MTMpPC9wPgo8L2Rpdj4KPC9kaXY+CjxkaXYgY2xhc3M9ImZvb3RlciI+PHA+SWYgeW91IHJlcG9ydCB0aGlzIGVycm9yIHRvIHRoZSBXaWtpbWVkaWEgU3lzdGVtIEFkbWluaXN0cmF0b3JzLCBwbGVhc2UgaW5jbHVkZSB0aGUgZGV0YWlscyBiZWxvdy48L3A+PHAgY2xhc3M9InRleHQtbXV0ZWQiPjxjb2RlPlJlcXVlc3Qgc2VydmVkIHZpYSBjcDQwNDggY3A0MDQ4LCBWYXJuaXNoIFhJRCAxNzY0NjI2MzM8YnI+VXBzdHJlYW0gY2FjaGVzOiBjcDQwNDggaW50PGJyPkVycm9yOiA0MjksIFVzZSB0aHVtYm5haWwgc3RlcHMgbGlzdGVkIG9uIGh0dHBzOi8vdy53aWtpL0dIYWkuIFBsZWFzZSBjb250YWN0IG5vY0B3aWtpbWVkaWEub3JnIGZvciBmdXJ0aGVyIGluZm9ybWF0aW9uIChhNzY1OTEzKSBhdCBUdWUsIDE3IE1hciAyMDI2IDAzOjAwOjQxIEdNVDxicj48ZGV0YWlscz48c3VtbWFyeT5TZW5zaXRpdmUgY2xpZW50IGluZm9ybWF0aW9uPC9zdW1tYXJ5PklQIGFkZHJlc3M6IDM4LjkyLjIxNC4xOTU8L2RldGFpbHM+PC9jb2RlPjwvcD4KPC9kaXY+CjwvaHRtbD4K" alt="Huawei">
+        <div>
+          <strong>HUAWEI</strong>
+          <span>Enterprise Intel</span>
+        </div>
+      </div>
+
+      <nav class="side-nav" aria-label="primary">
+        <a href="#overview" class="side-link is-active">总览</a>
+        <a href="#timeline" class="side-link">事件流</a>
+        <a href="#units" class="side-link">业务矩阵</a>
+        <a href="#network" class="side-link">合作生态</a>
+        <a href="#sharing" class="side-link">分享协作</a>
+      </nav>
+
+      <section class="sidebar-foot">
+        <p id="dataWindowLabel" class="sidebar-label">监测窗口</p>
+        <strong id="dataWindowValue">加载中</strong>
+        <span id="dataRefreshLabel">更新中</span>
+      </section>
+    </aside>
+
+    <main class="main-shell">
+      <header class="hero-card" id="overview">
+        <div class="hero-copy">
+          <span class="hero-kicker">Huawei Enterprise Intelligence Dashboard</span>
+          <h1>华为企业信息洞察仪表盘</h1>
+          <p id="heroSummary">
+            聚合战略、经营、合作、活动、高层交流与组织变动，支持外部分享与固定链接。
+          </p>
+          <div class="hero-actions">
+            <button id="copyShareButton" class="primary-button" type="button">复制分享链接</button>
+            <a id="downloadJsonLink" class="secondary-button" href="./data/dashboard-data.json" download>下载数据</a>
+            <button id="copySummaryButton" class="ghost-button" type="button">复制摘要</button>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-toolbar">
+            <div class="toolbar-chip toolbar-search">搜索企业、人事、合作与事件</div>
+            <div class="toolbar-chip">2026-05-09 至 2026-05-15</div>
+            <div class="toolbar-avatar">源</div>
+          </div>
+          <div class="hero-building">
+            <div class="building-glow"></div>
+            <div class="building-card">
+              <span>企业信息源</span>
+              <strong id="sourceCoverageCount">0</strong>
+              <p>官网、交易所、权威媒体、合作方公告交叉校验</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="kpi-strip" id="kpiStrip" aria-label="核心指标"></section>
+
+      <section class="filter-card" aria-label="筛选">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Filter Workspace</span>
+            <h2>筛选与外部分享</h2>
+          </div>
+          <p>筛选状态会写入 URL，便于生成面向老板、外部合作方或业务团队的固定视图。</p>
+        </div>
+        <div id="filterGroups" class="filter-groups"></div>
+      </section>
+
+      <section class="dashboard-grid">
+        <section class="panel panel-timeline" id="timeline">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Event Flow</span>
+              <h2>企业新闻动态</h2>
+            </div>
+            <div id="timelineMeta" class="panel-meta"></div>
+          </div>
+          <div id="timelineList" class="timeline-list" aria-live="polite"></div>
+        </section>
+
+        <aside class="panel panel-alerts">
+          <div class="panel-head compact">
+            <div>
+              <span class="section-kicker">Risk Watch</span>
+              <h3>重点预警</h3>
+            </div>
+          </div>
+          <div id="alertList" class="stack-list"></div>
+
+          <div class="panel-head compact panel-block-gap">
+            <div>
+              <span class="section-kicker">Executive Activity</span>
+              <h3>高层动态</h3>
+            </div>
+          </div>
+          <div id="executiveList" class="stack-list"></div>
+        </aside>
+      </section>
+
+      <section class="panel" id="units">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">Business Matrix</span>
+            <h2>业务单元表现矩阵</h2>
+          </div>
+          <div id="unitMeta" class="panel-meta"></div>
+        </div>
+        <div id="unitGrid" class="unit-grid"></div>
+      </section>
+
+      <section class="lower-grid">
+        <section class="panel" id="network">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Collaboration</span>
+              <h2>合作生态网络</h2>
+            </div>
+          </div>
+          <div class="network-shell">
+            <div id="networkCanvas" class="network-canvas" aria-hidden="true"></div>
+            <div id="networkLegend" class="network-legend"></div>
+          </div>
+        </section>
+
+        <section class="panel panel-heat">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Coverage Heat</span>
+              <h2>地域热力与来源结构</h2>
+            </div>
+          </div>
+          <div class="heat-content">
+            <div id="regionBars" class="region-bars"></div>
+            <div id="sourceBreakdown" class="source-breakdown"></div>
+          </div>
+        </section>
+
+        <section class="panel" id="sharing">
+          <div class="panel-head">
+            <div>
+              <span class="section-kicker">Sharing</span>
+              <h2>分享与协作</h2>
+            </div>
+          </div>
+          <div class="sharing-cards">
+            <article class="share-card">
+              <span>可分享链接</span>
+              <strong>保留当前筛选视图</strong>
+              <p>适合日报、周报、外部同步或微信转发。</p>
+              <button id="copyShareInlineButton" class="inline-button" type="button">复制链接</button>
+            </article>
+            <article class="share-card">
+              <span>外部单文件</span>
+              <strong>静态 HTML 无依赖</strong>
+              <p>可直接上传到静态托管、发给合作方或归档留痕。</p>
+              <a class="inline-button secondary" href="./share.html" target="_blank" rel="noopener">打开分享页</a>
+            </article>
+            <article class="share-card">
+              <span>口径说明</span>
+              <strong id="policyTitle">来源策略</strong>
+              <p id="policySummary">加载中</p>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <template id="timelineItemTemplate">
+    <article class="timeline-item">
+      <div class="timeline-top">
+        <time class="timeline-date"></time>
+        <div class="timeline-tags"></div>
+      </div>
+      <h3 class="timeline-title"></h3>
+      <p class="timeline-summary"></p>
+      <div class="timeline-meta"></div>
+      <div class="timeline-foot">
+        <div class="timeline-keywords"></div>
+        <a class="timeline-link" target="_blank" rel="noopener noreferrer">查看原文</a>
+      </div>
+    </article>
+  </template>
+
+  <script>
+window.__HUAWEI_ENTERPRISE_DATA__ = {"meta": {"updatedAt": "2026-05-15T16:30:00+08:00", "window": "2026-05-09 至 2026-05-15", "sourceCoverage": 34, "policyTitle": "来源与口径", "policySummary": "默认优先使用华为官网、合作方官网、交易所公告与权威媒体，确保每条动态都能追溯到具体原文页。", "summary": "用于外部同步的华为企业信息洞察页面样例。"}, "kpis": [{"label": "本期关键动态", "value": 26, "dynamic": "eventCount", "note": "含战略、经营、合作与高层", "delta": "较上期 +8", "deltaDirection": "up"}, {"label": "覆盖信源", "value": 34, "dynamic": "sourceCoverage", "note": "官网 / 公告 / 权威媒体", "delta": "持续扩容", "deltaDirection": "up"}, {"label": "合作类动态", "value": 9, "dynamic": "cooperationCount", "note": "签约、投资、生态接入", "delta": "本周偏高", "deltaDirection": "up"}, {"label": "高层交流", "value": 5, "dynamic": "executiveCount", "note": "董事长 / 总裁级公开活动", "delta": "重点关注", "deltaDirection": "flat"}, {"label": "高优先预警", "value": 3, "note": "需二次复核", "delta": "较上周 -1", "deltaDirection": "down"}], "units": [{"id": "huawei-terminal", "name": "鸿蒙智行", "englishName": "Harmony Intelligent Mobility", "focus": "车型发布、订单与交付、品牌高端化", "metricLabel": "关键指标", "metricValue": "新车节奏密集", "delta": "+18%", "deltaDirection": "up", "color": "#c7000b", "trend": [8, 10, 9, 12, 14, 13, 17]}, {"id": "yinwang", "name": "引望", "englishName": "Yinwang", "focus": "股权合作、开放平台、车企生态扩容", "metricLabel": "关键指标", "metricValue": "车企股东扩容预期", "delta": "+11%", "deltaDirection": "up", "color": "#11a7a2", "trend": [3, 4, 4, 5, 5, 6, 7]}, {"id": "digital-power", "name": "数字能源", "englishName": "Digital Power", "focus": "智能电动、超充网络、联盟合作", "metricLabel": "关键指标", "metricValue": "超充生态继续扩围", "delta": "+15%", "deltaDirection": "up", "color": "#1f9a4d", "trend": [6, 7, 8, 8, 10, 12, 13]}, {"id": "ict", "name": "华为ICT", "englishName": "Huawei ICT", "focus": "企业业务、行业数字化、海外拓展", "metricLabel": "关键指标", "metricValue": "行业方案输出加快", "delta": "+9%", "deltaDirection": "up", "color": "#4278ff", "trend": [11, 11, 12, 13, 14, 13, 15]}, {"id": "huitong", "name": "华为慧通", "englishName": "Huawei Huitong", "focus": "终端零售、服务触点、渠道协同", "metricLabel": "关键指标", "metricValue": "公开动态相对低频", "delta": "+4%", "deltaDirection": "flat", "color": "#e58e16", "trend": [2, 2, 3, 3, 4, 3, 4]}, {"id": "qifa", "name": "华为企发", "englishName": "Huawei Enterprise Development", "focus": "生态合作、业务发展、对外联动", "metricLabel": "关键指标", "metricValue": "生态侧信息待持续追踪", "delta": "+5%", "deltaDirection": "flat", "color": "#5a63d8", "trend": [2, 3, 2, 4, 3, 5, 5]}], "events": [{"id": "evt-001", "publishedAt": "2026-05-15T15:10:00+08:00", "entity": "huawei-terminal", "topic": "activity", "priority": "medium", "sourceType": "media", "sourceName": "IT之家", "location": "上海", "region": "华东", "title": "智界 V9 正式上市，预售热度与高端 MPV 定位同步强化", "summary": "发布会披露智界 V9 小定突破 4 万台，奇瑞与华为的联合产品定义能力再次成为外部焦点。", "keywords": ["智界V9", "上市", "高端MPV", "尹同跃"], "url": "https://www.ithome.com/0/950/937.htm"}, {"id": "evt-002", "publishedAt": "2026-05-14T10:50:00+08:00", "entity": "huawei-terminal", "topic": "operations", "priority": "medium", "sourceType": "media", "sourceName": "IT之家", "location": "全国", "region": "华东", "title": "智界 V9 试驾车发往各地，上市前终端预热进入冲刺阶段", "summary": "试驾车发运意味着鸿蒙智行终端销售和体验网络开始全面承接新品上市节奏。", "keywords": ["试驾车", "发运", "销售准备", "鸿蒙智行"], "url": "https://www.ithome.com/0/950/077.htm"}, {"id": "evt-003", "publishedAt": "2026-05-13T09:20:00+08:00", "entity": "huawei-terminal", "topic": "strategy", "priority": "medium", "sourceType": "media", "sourceName": "IT之家", "location": "深圳", "region": "华南", "title": "尊界 S800 高定版实车上路，200 万级价格锚点进一步明确", "summary": "余承东对外释放高端定价信号，尊界超豪华品牌定位继续向上拉升。", "keywords": ["尊界S800", "高定版", "余承东", "高端化"], "url": "https://www.ithome.com/0/950/019.htm"}, {"id": "evt-004", "publishedAt": "2026-05-12T18:00:00+08:00", "entity": "yinwang", "topic": "cooperation", "priority": "high", "sourceType": "media", "sourceName": "证券时报", "location": "合肥", "region": "华东", "title": "江淮拟投资引望的资本合作继续发酵，开放平台属性被持续放大", "summary": "在车企股权合作预期增强的背景下，引望作为开放平台的战略定位获得更多市场关注。", "keywords": ["江淮", "引望", "投资", "开放平台"], "url": "https://www.stcn.com/article/detail/3898676.html"}, {"id": "evt-005", "publishedAt": "2026-05-13T11:00:00+08:00", "entity": "digital-power", "topic": "cooperation", "priority": "medium", "sourceType": "media", "sourceName": "IT之家", "location": "上海", "region": "华东", "title": "华为超充接入智己汽车充电地图，补能生态向车主端延伸", "summary": "超充网络合作从站端建设扩展到用户入口，强化车主找桩、车机地图与补能体验闭环。", "keywords": ["华为超充", "智己", "充电地图", "生态接入"], "url": "https://www.ithome.com/0/949/785.htm"}, {"id": "evt-006", "publishedAt": "2026-05-07T14:00:00+08:00", "entity": "digital-power", "topic": "cooperation", "priority": "high", "sourceType": "media", "sourceName": "证券时报", "location": "合肥", "region": "华东", "title": "江汽集团与华为数字能源成立智能电动联合创新中心", "summary": "双方合作从采购配套升级为联合定义与深度共研，聚焦高压化、高效化、智能化技术路线。", "keywords": ["江汽", "数字能源", "联合创新中心", "智能电动"], "url": "https://www.stcn.com/article/detail/3898676.html"}, {"id": "evt-007", "publishedAt": "2026-05-11T08:30:00+08:00", "entity": "ict", "topic": "strategy", "priority": "medium", "sourceType": "official", "sourceName": "华为企业业务官网", "location": "欧洲", "region": "欧洲", "title": "华为发布欧洲零售数字化领航计划，持续扩展行业解决方案", "summary": "该计划聚焦智慧门店、智能仓储和数字营销三大场景，反映华为ICT在海外行业数字化上的持续推进。", "keywords": ["华为ICT", "欧洲", "零售", "数字化"], "url": "https://e.huawei.com/cn/news/2026/industries/retail/european-retail-digital-navigation-initiative"}, {"id": "evt-008", "publishedAt": "2026-05-15T09:00:00+08:00", "entity": "huitong", "topic": "organization", "priority": "low", "sourceType": "official", "sourceName": "华为终端服务社区", "location": "全国", "region": "华南", "title": "终端服务与零售协同节奏延续，外部公开信息仍以运营动作延展为主", "summary": "华为慧通相关公开动态仍偏低频，更多体现为零售与服务触点体系的持续运营。", "keywords": ["华为慧通", "零售", "服务", "运营"], "url": "https://consumer.huawei.com/cn/support/"}, {"id": "evt-009", "publishedAt": "2026-05-15T09:30:00+08:00", "entity": "qifa", "topic": "organization", "priority": "low", "sourceType": "official", "sourceName": "华为官网", "location": "深圳", "region": "华南", "title": "华为企发口径公开动态相对有限，外界关注点更多在生态协同延展", "summary": "本期可追溯公开信息不多，建议继续通过官网、合作方与媒体口径交叉跟踪。", "keywords": ["企发", "生态", "对外协同", "跟踪"], "url": "https://www.huawei.com/cn/"}, {"id": "evt-010", "publishedAt": "2026-05-13T13:30:00+08:00", "entity": "digital-power", "topic": "executive", "priority": "medium", "sourceType": "official", "sourceName": "华为数字能源官网", "location": "深圳", "region": "华南", "title": "何波延续输出兆瓦超充主线，强调高质量充电网络的普及目标", "summary": "公开口径继续围绕重卡超充和高质量补能网络建设，显示数字能源战略主线保持稳定。", "keywords": ["何波", "兆瓦超充", "高质量充电", "重卡"], "url": "https://digitalpower.huawei.com/cn/news/smart-charging-network/megawatt-charging-new-era"}, {"id": "evt-011", "publishedAt": "2026-05-14T16:20:00+08:00", "entity": "ict", "topic": "activity", "priority": "medium", "sourceType": "official", "sourceName": "华为企业业务官网", "location": "欧洲", "region": "欧洲", "title": "华为ICT行业方案继续在海外场景化传播，渠道侧活动保持活跃", "summary": "企业业务新闻重心仍落在行业数字化案例和方案触达，对外叙事清晰。", "keywords": ["行业方案", "海外", "企业业务", "案例传播"], "url": "https://e.huawei.com/cn/news"}, {"id": "evt-012", "publishedAt": "2026-05-12T11:20:00+08:00", "entity": "yinwang", "topic": "executive", "priority": "medium", "sourceType": "media", "sourceName": "财联社", "location": "深圳", "region": "华南", "title": "引望高层口径继续聚焦开放平台定位，不造车、做赋能者的边界保持一致", "summary": "高层表态延续前期判断，外界关注点仍集中在车企股东扩容与平台化路径。", "keywords": ["靳玉志", "开放平台", "不造车", "赋能者"], "url": "https://www.cls.cn/detail/2369119"}], "network": [{"label": "车企合作", "value": 18, "color": "rgba(199,0,11,0.45)"}, {"label": "运营商", "value": 8, "color": "rgba(66,120,255,0.45)"}, {"label": "政府/园区", "value": 6, "color": "rgba(17,167,162,0.45)"}, {"label": "高校科研", "value": 5, "color": "rgba(90,99,216,0.45)"}, {"label": "媒体触点", "value": 14, "color": "rgba(229,142,22,0.45)"}, {"label": "资本合作", "value": 7, "color": "rgba(31,154,77,0.45)"}], "regions": [{"name": "华东", "value": 11}, {"name": "华南", "value": 9}, {"name": "华北", "value": 5}, {"name": "欧洲", "value": 4}, {"name": "中东", "value": 2}], "sources": [{"id": "official", "label": "官方口径", "value": 12}, {"id": "media", "label": "权威媒体", "value": 14}]};
+</script>
+<script>
+const DEFAULT_DATA_URL = "./data/dashboard-data.json";
+const EMBEDDED_DATA = window.__HUAWEI_ENTERPRISE_DATA__ || null;
+
+const FILTERS = {
+  time: [
+    { value: "all", label: "全部时间" },
+    { value: "7d", label: "近7天" },
+    { value: "30d", label: "近30天" }
+  ],
+  entity: [
+    { value: "all", label: "全部主体" },
+    { value: "huawei-terminal", label: "鸿蒙智行" },
+    { value: "yinwang", label: "引望" },
+    { value: "digital-power", label: "数字能源" },
+    { value: "ict", label: "华为ICT" },
+    { value: "huitong", label: "华为慧通" },
+    { value: "qifa", label: "华为企发" }
+  ],
+  topic: [
+    { value: "all", label: "全部主题" },
+    { value: "strategy", label: "战略" },
+    { value: "operations", label: "经营" },
+    { value: "cooperation", label: "合作" },
+    { value: "activity", label: "活动" },
+    { value: "executive", label: "高层" },
+    { value: "organization", label: "组织" }
+  ],
+  source: [
+    { value: "all", label: "全部来源" },
+    { value: "official", label: "官方" },
+    { value: "media", label: "媒体" }
+  ]
+};
+
+const LABELS = {
+  entity: {
+    "huawei-terminal": "鸿蒙智行",
+    yinwang: "引望",
+    "digital-power": "数字能源",
+    ict: "华为ICT",
+    huitong: "华为慧通",
+    qifa: "华为企发"
+  },
+  topic: {
+    strategy: "战略",
+    operations: "经营",
+    cooperation: "合作",
+    activity: "活动",
+    executive: "高层",
+    organization: "组织"
+  },
+  source: {
+    official: "官方",
+    media: "媒体"
+  }
+};
+
+const query = new URLSearchParams(window.location.search);
+const state = {
+  time: normalizeValue("time", query.get("time")),
+  entity: normalizeValue("entity", query.get("entity")),
+  topic: normalizeValue("topic", query.get("topic")),
+  source: normalizeValue("source", query.get("source"))
+};
+
+const elements = {
+  heroSummary: document.getElementById("heroSummary"),
+  sourceCoverageCount: document.getElementById("sourceCoverageCount"),
+  kpiStrip: document.getElementById("kpiStrip"),
+  filterGroups: document.getElementById("filterGroups"),
+  timelineList: document.getElementById("timelineList"),
+  timelineMeta: document.getElementById("timelineMeta"),
+  alertList: document.getElementById("alertList"),
+  executiveList: document.getElementById("executiveList"),
+  unitGrid: document.getElementById("unitGrid"),
+  unitMeta: document.getElementById("unitMeta"),
+  networkCanvas: document.getElementById("networkCanvas"),
+  networkLegend: document.getElementById("networkLegend"),
+  regionBars: document.getElementById("regionBars"),
+  sourceBreakdown: document.getElementById("sourceBreakdown"),
+  policyTitle: document.getElementById("policyTitle"),
+  policySummary: document.getElementById("policySummary"),
+  dataWindowValue: document.getElementById("dataWindowValue"),
+  dataRefreshLabel: document.getElementById("dataRefreshLabel"),
+  downloadJsonLink: document.getElementById("downloadJsonLink"),
+  copyShareButton: document.getElementById("copyShareButton"),
+  copyShareInlineButton: document.getElementById("copyShareInlineButton"),
+  copySummaryButton: document.getElementById("copySummaryButton"),
+  timelineTemplate: document.getElementById("timelineItemTemplate")
+};
+
+let dataset = null;
+let embeddedDownloadUrl = null;
+
+loadData();
+bindEvents();
+
+async function loadData() {
+  try {
+    if (EMBEDDED_DATA) {
+      dataset = normalizeDataset(EMBEDDED_DATA);
+    } else {
+      const response = await fetch(DEFAULT_DATA_URL, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      dataset = normalizeDataset(await response.json());
+    }
+
+    render();
+  } catch (error) {
+    renderFailure(error);
+  }
+}
+
+function bindEvents() {
+  elements.filterGroups.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-filter-key]");
+    if (!button) {
+      return;
+    }
+
+    state[button.dataset.filterKey] = button.dataset.filterValue;
+    syncQuery();
+    render();
+  });
+
+  elements.copyShareButton.addEventListener("click", copyShareLink);
+  elements.copyShareInlineButton.addEventListener("click", copyShareLink);
+  elements.copySummaryButton.addEventListener("click", copySummaryText);
+}
+
+function normalizeDataset(raw) {
+  return {
+    meta: raw.meta || {},
+    kpis: Array.isArray(raw.kpis) ? raw.kpis : [],
+    units: Array.isArray(raw.units) ? raw.units : [],
+    events: (raw.events || [])
+      .map((event) => ({
+        ...event,
+        publishedAt: event.publishedAt || null
+      }))
+      .sort((left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime()),
+    network: Array.isArray(raw.network) ? raw.network : [],
+    regions: Array.isArray(raw.regions) ? raw.regions : [],
+    sources: Array.isArray(raw.sources) ? raw.sources : []
+  };
+}
+
+function normalizeValue(key, value) {
+  return FILTERS[key].some((item) => item.value === value) ? value : "all";
+}
+
+function render() {
+  const events = applyFilters(dataset.events);
+  const eventCount = events.length;
+  const sourceNames = new Set(events.map((item) => item.sourceName).filter(Boolean));
+
+  elements.heroSummary.textContent = buildHeroSummary(events);
+  elements.sourceCoverageCount.textContent = String(sourceNames.size || dataset.meta.sourceCoverage || 0);
+  elements.dataWindowValue.textContent = dataset.meta.window || "未设置";
+  elements.dataRefreshLabel.textContent = `最近更新 ${formatDateTime(dataset.meta.updatedAt)}`;
+  elements.policyTitle.textContent = dataset.meta.policyTitle || "来源策略";
+  elements.policySummary.textContent = dataset.meta.policySummary || "未设置";
+  elements.timelineMeta.textContent = `当前视图共 ${eventCount} 条`;
+  elements.unitMeta.textContent = `${dataset.units.length} 个业务单元`;
+
+  if (EMBEDDED_DATA) {
+    if (embeddedDownloadUrl) {
+      URL.revokeObjectURL(embeddedDownloadUrl);
+    }
+    embeddedDownloadUrl = URL.createObjectURL(new Blob([JSON.stringify(dataset, null, 2)], { type: "application/json" }));
+    elements.downloadJsonLink.href = embeddedDownloadUrl;
+  }
+
+  renderKpis(events);
+  renderFilters();
+  renderTimeline(events);
+  renderStacks(events);
+  renderUnits(events);
+  renderNetwork();
+  renderRegions(events);
+  renderSources(events);
+}
+
+function applyFilters(events) {
+  const now = dataset.meta.updatedAt ? new Date(dataset.meta.updatedAt) : new Date();
+
+  return events.filter((event) => {
+    if (state.entity !== "all" && event.entity !== state.entity) {
+      return false;
+    }
+    if (state.topic !== "all" && event.topic !== state.topic) {
+      return false;
+    }
+    if (state.source !== "all" && event.sourceType !== state.source) {
+      return false;
+    }
+    if (!isInTimeWindow(event, state.time, now)) {
+      return false;
+    }
+    return true;
+  });
+}
+
+function isInTimeWindow(event, filter, now) {
+  if (filter === "all") {
+    return true;
+  }
+
+  const publishedTime = new Date(event.publishedAt).getTime();
+  if (Number.isNaN(publishedTime)) {
+    return false;
+  }
+
+  const diffHours = (now.getTime() - publishedTime) / (1000 * 60 * 60);
+  if (filter === "7d") {
+    return diffHours <= 24 * 7;
+  }
+  if (filter === "30d") {
+    return diffHours <= 24 * 30;
+  }
+  return true;
+}
+
+function renderKpis(events) {
+  const sourceMap = new Map();
+  events.forEach((event) => {
+    sourceMap.set(event.sourceName, true);
+  });
+
+  const eventByTopic = new Map();
+  events.forEach((event) => {
+    eventByTopic.set(event.topic, (eventByTopic.get(event.topic) || 0) + 1);
+  });
+
+  const cards = dataset.kpis.map((kpi) => {
+    let value = kpi.value;
+    if (kpi.dynamic === "eventCount") {
+      value = events.length;
+    }
+    if (kpi.dynamic === "sourceCoverage") {
+      value = sourceMap.size;
+    }
+    if (kpi.dynamic === "cooperationCount") {
+      value = eventByTopic.get("cooperation") || 0;
+    }
+    if (kpi.dynamic === "executiveCount") {
+      value = eventByTopic.get("executive") || 0;
+    }
+
+    return `
+      <article class="kpi-card">
+        <span>${escapeHtml(kpi.label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <div class="kpi-foot">
+          <span>${escapeHtml(kpi.note || "")}</span>
+          <span class="delta ${deltaClass(kpi.deltaDirection)}">${escapeHtml(kpi.delta || "")}</span>
+        </div>
+      </article>
+    `;
+  });
+
+  elements.kpiStrip.innerHTML = cards.join("");
+}
+
+function renderFilters() {
+  elements.filterGroups.innerHTML = "";
+  const groups = [
+    { key: "time", label: "时间" },
+    { key: "entity", label: "主体" },
+    { key: "topic", label: "主题" },
+    { key: "source", label: "来源" }
+  ];
+
+  groups.forEach((group) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "filter-group";
+
+    const label = document.createElement("div");
+    label.className = "filter-label";
+    label.textContent = group.label;
+
+    const options = document.createElement("div");
+    options.className = "filter-options";
+
+    FILTERS[group.key].forEach((option) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `filter-button${state[group.key] === option.value ? " is-active" : ""}`;
+      button.dataset.filterKey = group.key;
+      button.dataset.filterValue = option.value;
+      button.textContent = option.label;
+      options.appendChild(button);
+    });
+
+    wrapper.append(label, options);
+    elements.filterGroups.append(wrapper);
+  });
+}
+
+function renderTimeline(events) {
+  elements.timelineList.innerHTML = "";
+
+  if (!events.length) {
+    elements.timelineList.innerHTML = '<div class="empty-state">当前筛选下暂无事件。</div>';
+    return;
+  }
+
+  events.forEach((event) => {
+    const fragment = elements.timelineTemplate.content.cloneNode(true);
+    fragment.querySelector(".timeline-date").textContent = formatDateTime(event.publishedAt);
+    fragment.querySelector(".timeline-title").textContent = event.title;
+    fragment.querySelector(".timeline-summary").textContent = event.summary;
+    fragment.querySelector(".timeline-meta").textContent = `${LABELS.entity[event.entity] || event.entity} · ${event.sourceName || "未标注来源"} · ${event.location || "未标注地点"}`;
+    const link = fragment.querySelector(".timeline-link");
+    link.href = event.url;
+
+    const tags = fragment.querySelector(".timeline-tags");
+    tags.appendChild(buildTag(LABELS.source[event.sourceType] || event.sourceType, `is-${event.sourceType}`));
+    tags.appendChild(buildTag(LABELS.topic[event.topic] || event.topic, `is-${event.priority || "medium"}`));
+
+    const keywords = fragment.querySelector(".timeline-keywords");
+    (event.keywords || []).slice(0, 4).forEach((keyword) => {
+      const chip = document.createElement("span");
+      chip.className = "keyword-chip";
+      chip.textContent = keyword;
+      keywords.appendChild(chip);
+    });
+
+    elements.timelineList.appendChild(fragment);
+  });
+}
+
+function renderStacks(events) {
+  const riskEvents = events.filter((event) => event.priority === "high").slice(0, 3);
+  const executiveEvents = events.filter((event) => event.topic === "executive").slice(0, 3);
+
+  renderStack(elements.alertList, riskEvents, "当前筛选下暂无高优先级预警。");
+  renderStack(elements.executiveList, executiveEvents, "当前筛选下暂无高层动态。");
+}
+
+function renderStack(container, items, emptyText) {
+  container.innerHTML = "";
+  if (!items.length) {
+    container.innerHTML = `<div class="empty-state">${escapeHtml(emptyText)}</div>`;
+    return;
+  }
+
+  items.forEach((item) => {
+    const article = document.createElement("article");
+    article.className = "stack-card";
+    article.innerHTML = `
+      <div class="stack-card-head">
+        <span class="tag is-${item.priority || "medium"}">${escapeHtml(LABELS.topic[item.topic] || item.topic)}</span>
+        <span class="stack-card-foot">${escapeHtml(formatDate(item.publishedAt))}</span>
+      </div>
+      <strong>${escapeHtml(item.title)}</strong>
+      <p>${escapeHtml(item.summary)}</p>
+      <div class="stack-card-foot">${escapeHtml(item.sourceName || "")}</div>
+    `;
+    container.append(article);
+  });
+}
+
+function renderUnits(events) {
+  const countMap = new Map();
+  events.forEach((event) => {
+    countMap.set(event.entity, (countMap.get(event.entity) || 0) + 1);
+  });
+
+  elements.unitGrid.innerHTML = dataset.units
+    .map((unit) => {
+      const count = countMap.get(unit.id) || 0;
+      return `
+        <article class="unit-card">
+          <span class="eyeline">${escapeHtml(unit.englishName)}</span>
+          <h3>${escapeHtml(unit.name)}</h3>
+          <div class="unit-subline">${escapeHtml(unit.focus)}</div>
+          <div class="unit-metric">
+            <div>
+              <span>本期动态</span>
+              <strong>${count}</strong>
+            </div>
+            ${buildSparkline(unit.trend || [], unit.color || "#4278ff")}
+          </div>
+          <div class="unit-card-foot">
+            <span class="timeline-meta">${escapeHtml(unit.metricLabel)} ${escapeHtml(unit.metricValue)}</span>
+            <span class="delta ${deltaClass(unit.deltaDirection)}">${escapeHtml(unit.delta)}</span>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function renderNetwork() {
+  const canvas = elements.networkCanvas;
+  const legend = elements.networkLegend;
+  canvas.innerHTML = "";
+  legend.innerHTML = "";
+
+  const centerX = 50;
+  const centerY = 50;
+  const radius = 34;
+
+  const center = document.createElement("div");
+  center.className = "network-center";
+  center.innerHTML = "<div><span>核心企业</span><strong>华为</strong></div>";
+  canvas.appendChild(center);
+
+  dataset.network.forEach((item, index) => {
+    const angle = (Math.PI * 2 * index) / dataset.network.length - Math.PI / 2;
+    const x = centerX + Math.cos(angle) * radius;
+    const y = centerY + Math.sin(angle) * radius;
+
+    const node = document.createElement("div");
+    node.className = "network-node";
+    node.style.left = `calc(${x}% - 41px)`;
+    node.style.top = `calc(${y}% - 41px)`;
+    node.innerHTML = `<div>${escapeHtml(item.label)}<strong>${escapeHtml(String(item.value))}</strong></div>`;
+    canvas.appendChild(node);
+
+    const line = document.createElement("div");
+    line.className = "network-line";
+    line.style.left = `${centerX}%`;
+    line.style.top = `${centerY}%`;
+    const dx = x - centerX;
+    const dy = y - centerY;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+    line.style.width = `${length}%`;
+    line.style.transform = `rotate(${angleDeg}deg)`;
+    line.style.background = item.color || "rgba(66, 120, 255, 0.45)";
+    canvas.appendChild(line);
+
+    const row = document.createElement("div");
+    row.className = "legend-row";
+    row.innerHTML = `
+      <span>${escapeHtml(item.label)}</span>
+      <strong>${escapeHtml(String(item.value))}</strong>
+    `;
+    legend.appendChild(row);
+  });
+}
+
+function renderRegions(events) {
+  const eventRegionMap = new Map();
+  events.forEach((event) => {
+    const region = event.region || "其他";
+    eventRegionMap.set(region, (eventRegionMap.get(region) || 0) + 1);
+  });
+
+  const regions = dataset.regions.map((region) => ({
+    ...region,
+    value: eventRegionMap.get(region.name) ?? region.value
+  }));
+  const maxValue = Math.max(...regions.map((item) => item.value), 1);
+
+  elements.regionBars.innerHTML = regions
+    .map((region) => `
+      <div class="region-item">
+        <div class="legend-row">
+          <span>${escapeHtml(region.name)}</span>
+          <strong>${escapeHtml(String(region.value))}</strong>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(region.value / maxValue) * 100}%"></div></div>
+      </div>
+    `)
+    .join("");
+}
+
+function renderSources(events) {
+  const sourceTypeMap = new Map();
+  events.forEach((event) => {
+    sourceTypeMap.set(event.sourceType, (sourceTypeMap.get(event.sourceType) || 0) + 1);
+  });
+  const maxValue = Math.max(...dataset.sources.map((item) => sourceTypeMap.get(item.id) ?? item.value), 1);
+
+  elements.sourceBreakdown.innerHTML = dataset.sources
+    .map((source) => {
+      const value = sourceTypeMap.get(source.id) ?? source.value;
+      return `
+        <div class="breakdown-item">
+          <div class="legend-row">
+            <span>${escapeHtml(source.label)}</span>
+            <strong>${escapeHtml(String(value))}</strong>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(value / maxValue) * 100}%"></div></div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function buildSparkline(values, color) {
+  if (!values.length) {
+    return "";
+  }
+
+  const width = 96;
+  const height = 38;
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const range = max - min || 1;
+
+  const points = values.map((value, index) => {
+    const x = (index / (values.length - 1 || 1)) * width;
+    const y = height - ((value - min) / range) * (height - 6) - 3;
+    return [x, y];
+  });
+
+  const linePath = points.map((point, index) => `${index === 0 ? "M" : "L"}${point[0]} ${point[1]}`).join(" ");
+  const areaPath = `${linePath} L ${width} ${height} L 0 ${height} Z`;
+
+  return `
+    <svg class="sparkline" viewBox="0 0 ${width} ${height}" aria-hidden="true">
+      <path class="area" d="${areaPath}" fill="${color}"></path>
+      <path class="line" d="${linePath}" stroke="${color}"></path>
+    </svg>
+  `;
+}
+
+function buildHeroSummary(events) {
+  const strategyCount = events.filter((item) => item.topic === "strategy").length;
+  const cooperationCount = events.filter((item) => item.topic === "cooperation").length;
+  const executiveCount = events.filter((item) => item.topic === "executive").length;
+  return `当前视图共汇总 ${events.length} 条可追溯动态，其中战略类 ${strategyCount} 条、合作类 ${cooperationCount} 条、高层交流 ${executiveCount} 条，适合直接对外同步或作为周报底稿。`;
+}
+
+function buildTag(label, className) {
+  const tag = document.createElement("span");
+  tag.className = `tag ${className}`.trim();
+  tag.textContent = label;
+  return tag;
+}
+
+function copyShareLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    flashButton(elements.copyShareButton, "已复制");
+    flashButton(elements.copyShareInlineButton, "已复制");
+  });
+}
+
+function copySummaryText() {
+  navigator.clipboard.writeText(elements.heroSummary.textContent).then(() => {
+    flashButton(elements.copySummaryButton, "摘要已复制");
+  });
+}
+
+function flashButton(button, text) {
+  const original = button.textContent;
+  button.textContent = text;
+  setTimeout(() => {
+    button.textContent = original;
+  }, 1200);
+}
+
+function syncQuery() {
+  const params = new URLSearchParams();
+  Object.entries(state).forEach(([key, value]) => {
+    if (value !== "all") {
+      params.set(key, value);
+    }
+  });
+
+  const nextUrl = `${window.location.pathname}${params.toString() ? `?${params}` : ""}`;
+  window.history.replaceState({}, "", nextUrl);
+}
+
+function renderFailure(error) {
+  document.querySelector(".main-shell").innerHTML = `
+    <section class="panel">
+      <div class="empty-state">数据加载失败：${escapeHtml(error.message)}</div>
+    </section>
+  `;
+}
+
+function formatDate(value) {
+  if (!value) {
+    return "未标注时间";
+  }
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+  return new Intl.DateTimeFormat("zh-CN", {
+    month: "2-digit",
+    day: "2-digit"
+  }).format(date);
+}
+
+function formatDateTime(value) {
+  if (!value) {
+    return "未标注";
+  }
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+  return new Intl.DateTimeFormat("zh-CN", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  }).format(date);
+}
+
+function deltaClass(direction) {
+  if (direction === "down") {
+    return "is-down";
+  }
+  if (direction === "flat") {
+    return "is-flat";
+  }
+  return "is-up";
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+</script>
+</body>
+</html>
