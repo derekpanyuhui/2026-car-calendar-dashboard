@@ -9,6 +9,35 @@
   },
   "events": [
     {
+      "id": "auto-m9-20260527-ithome-897",
+      "publishedAt": "2026-05-27T14:35:06+08:00",
+      "capturedAt": "2026-05-27T17:40:28+08:00",
+      "entity": "M9",
+      "model": "问界 M9",
+      "title": "鸿蒙智行全系累计交付新车超 139 万辆：2026 年累计 19 万辆，同比增长 27%",
+      "summary": "在今天鸿蒙智行问界 M9 系列新品发布会的开场，华为常务董事、产品投资评审委员会主任、终端 BG 董事长余承东宣布鸿蒙智行全系累计交付新车超 139 万辆。其中，2026 年累计交付新车 19 万辆，同比增长 27%。",
+      "category": "交付跟踪",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/955/897.htm",
+      "keywords": [
+        "问界",
+        "鸿蒙智行",
+        "华为",
+        "M9",
+        "交付"
+      ],
+      "impactScope": "用户信心、交付预期、转化效率",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260526-ithome-193",
       "publishedAt": "2026-05-26T10:49:32+08:00",
       "capturedAt": "2026-05-26T13:45:47+08:00",
