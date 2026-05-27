@@ -9,6 +9,34 @@
   },
   "events": [
     {
+      "id": "auto-m9-20260527-ithome-177",
+      "publishedAt": "2026-05-27T18:54:01+08:00",
+      "capturedAt": "2026-05-28T00:30:42+08:00",
+      "entity": "M9",
+      "model": "问界 M9",
+      "title": "华为余承东：全新问界 M9 系列 1 小时大定突破 11000 台",
+      "summary": "华为常务董事、产品投资委员会主任、终端 BG 董事长余承东在微博宣布：“全新问界 M9 系列，1 小时订单突破 11000 台！感谢大家支持！超 40 项行业首创技术，强悍性能，引领汽车行业再次跃迁！”",
+      "category": "订单跟踪",
+      "sentiment": "positive",
+      "riskLevel": "medium",
+      "riskReason": "标题或摘要命中升级、预售、订单、收费或传闻类关键词，自动归类为中风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/956/177.htm",
+      "keywords": [
+        "问界",
+        "华为",
+        "M9",
+        "订单"
+      ],
+      "impactScope": "传播热度、潜客线索、销量预期",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-m9-20260527-ithome-897",
       "publishedAt": "2026-05-27T14:35:06+08:00",
       "capturedAt": "2026-05-27T17:40:28+08:00",
