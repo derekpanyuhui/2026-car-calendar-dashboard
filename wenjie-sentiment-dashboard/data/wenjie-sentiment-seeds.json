@@ -9,6 +9,34 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260529-ithome-309",
+      "publishedAt": "2026-05-29T18:02:00+08:00",
+      "capturedAt": "2026-05-30T00:33:00+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "赛力斯：正积极布局海外市场，问界坚定高端出海",
+      "summary": "赛力斯今日在互动平台表示，公司密切关注国际市场动态，正在积极布局海外市场。问界坚定高端出海，在电动化、智能化、体系化服务能力等方面打造竞争力。#赛力斯# #问界#",
+      "category": "服务权益",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/957/309.htm",
+      "keywords": [
+        "问界",
+        "赛力斯",
+        "服务",
+        "出海"
+      ],
+      "impactScope": "用户满意度、服务口碑、留存复购",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260528-ithome-813",
       "publishedAt": "2026-05-28T22:53:32+08:00",
       "capturedAt": "2026-05-29T00:46:01+08:00",
