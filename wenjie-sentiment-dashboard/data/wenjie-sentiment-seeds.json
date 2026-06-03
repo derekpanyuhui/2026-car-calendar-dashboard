@@ -9,6 +9,32 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260603-ithome-158",
+      "publishedAt": "2026-06-03T11:27:01+08:00",
+      "capturedAt": "2026-06-03T14:30:13+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "问界汽车回应浙江台州 M9 事故：撞击前车掉落的大块金属部件，造成强物理冲击并持续拖行一段时间后导致起火",
+      "summary": "经现场确认，事故为车辆行驶过程中，撞击前车掉落的大块金属部件，造成强物理冲击并持续拖行一段时间后导致起火，目前火已扑灭。经初步调查，事发前车辆三电系统状态正常，且未见车辆其它自身异常，事故非车辆自身原因导致。",
+      "category": "争议事件",
+      "sentiment": "negative",
+      "riskLevel": "high",
+      "riskReason": "标题或摘要命中争议 / 事故 / 投诉类关键词，自动归类为高风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/959/158.htm",
+      "keywords": [
+        "问界",
+        "M9"
+      ],
+      "impactScope": "车主情绪、社媒讨论、订单稳定性",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 AITO 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260529-ithome-309",
       "publishedAt": "2026-05-29T18:02:00+08:00",
       "capturedAt": "2026-05-30T00:33:00+08:00",
