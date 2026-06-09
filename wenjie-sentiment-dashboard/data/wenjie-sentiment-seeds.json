@@ -9,6 +9,32 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260609-ithome-860",
+      "publishedAt": "2026-06-09T12:48:59+08:00",
+      "capturedAt": "2026-06-09T13:48:47+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "张兴海之子张正萍接任赛力斯汽车公司董事长，曾参与并主导与华为合作",
+      "summary": "赛力斯汽车有限公司于 6 月 5 日发生工商变更，创始人张兴海卸任董事长，其子张正萍接任。",
+      "category": "合作动态",
+      "sentiment": "neutral",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/961/860.htm",
+      "keywords": [
+        "赛力斯",
+        "华为"
+      ],
+      "impactScope": "品牌背书、生态协同、资本认知",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260603-ithome-158",
       "publishedAt": "2026-06-03T11:27:01+08:00",
       "capturedAt": "2026-06-03T14:30:13+08:00",
