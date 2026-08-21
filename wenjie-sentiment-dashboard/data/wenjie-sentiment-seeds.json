@@ -36,6 +36,33 @@
       "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
     },
     {
+      "id": "auto-brand-undated-digitalpower-g9",
+      "publishedAt": "2026-08-21T00:00:00+08:00",
+      "capturedAt": "2026-08-21T21:35:47+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "享界G9正式发布，全系首发华为智擎自适应差速锁电驱，以精准控制守护出行安全",
+      "summary": "鸿蒙智行旗下首款豪华硬派SUV——享界G9正式上市，全系首发华为智擎自适应差速锁电驱系统，能够实时识别泥泞、交叉轴等复杂路况并自动锁止差速器，这一技术大幅降低了驾驶门槛，让车辆从容兼顾城市日常通勤与周末奔赴旷野的双重需求。",
+      "category": "新品动态",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为华为数字能源，建议人工确认最终定性。",
+      "sourceType": "official",
+      "sourceTier": "合作方官方",
+      "sourceName": "华为数字能源",
+      "publisher": "华为数字能源",
+      "url": "https://digitalpower.huawei.com/cn/news/driveone/g9",
+      "keywords": [
+        "鸿蒙智行",
+        "华为",
+        "上市"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：华为官网搜索接口 / 关键词 鸿蒙智行 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260819-ithome-847",
       "publishedAt": "2026-08-19T22:17:07+08:00",
       "capturedAt": "2026-08-20T10:40:38+08:00",
