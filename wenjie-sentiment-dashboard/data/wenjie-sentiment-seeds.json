@@ -9,6 +9,32 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260822-news-c",
+      "publishedAt": "2026-08-22T01:51:38+08:00",
+      "capturedAt": "2026-08-22T10:37:33+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "鸿蒙智行首款科技豪华硬派SUV 享界G9上市 售价42.98万元起 -新华网",
+      "summary": "鸿蒙智行首款科技豪华硬派SUV 享界G9上市 售价42.98万元起 -9系旗舰豪华满配，让硬派更享受享界G9延续鸿蒙智行9系豪华旗舰基因，让硬派更享受、更智能。",
+      "category": "新品动态",
+      "sentiment": "positive",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为新华网，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "权威媒体",
+      "sourceName": "新华网",
+      "publisher": "新华网",
+      "url": "https://www.news.cn/auto/20260822/9692341c96564ab29cc894bc18d38f94/c.html",
+      "keywords": [
+        "鸿蒙智行",
+        "上市"
+      ],
+      "impactScope": "新品关注度、舆论热度、潜客决策",
+      "status": "pending-review",
+      "traceability": "自动发现：新华汽车列表页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260821-ithome-456",
       "publishedAt": "2026-08-21T09:48:54+08:00",
       "capturedAt": "2026-08-21T10:47:33+08:00",
