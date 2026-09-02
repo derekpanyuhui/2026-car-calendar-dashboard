@@ -9,6 +9,31 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260902-news-c",
+      "publishedAt": "2026-09-02T15:25:53+08:00",
+      "capturedAt": "2026-09-02T18:34:46+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "赛力斯举办40周年大会 锚定新十年发展方向-新华网",
+      "summary": "赛力斯举办40周年大会 锚定新十年发展方向-大会以“初心扎根、领先赛行”为主题，回顾赛力斯四十年成长历程，锚定新十年发展方向。",
+      "category": "动态跟踪",
+      "sentiment": "neutral",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为新华网，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "权威媒体",
+      "sourceName": "新华网",
+      "publisher": "新华网",
+      "url": "https://www.news.cn/auto/20260902/e0d267c080ef47768c76601bff294106/c.html",
+      "keywords": [
+        "赛力斯"
+      ],
+      "impactScope": "品牌热度、用户关注、后续跟踪",
+      "status": "pending-review",
+      "traceability": "自动发现：新华汽车列表页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-m9-20260830-ithome-135",
       "publishedAt": "2026-08-30T15:00:37+08:00",
       "capturedAt": "2026-08-30T15:16:09+08:00",
