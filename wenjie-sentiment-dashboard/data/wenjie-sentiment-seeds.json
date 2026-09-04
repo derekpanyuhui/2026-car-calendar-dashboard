@@ -9,6 +9,32 @@
   },
   "events": [
     {
+      "id": "auto-brand-20260904-ithome-592",
+      "publishedAt": "2026-09-04T20:34:45+08:00",
+      "capturedAt": "2026-09-05T00:38:09+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "问界：网传 M6 车型“预制车”铭牌系 P 图 / AI 修改生成，已就谣言报案",
+      "summary": "问界官方今日辟谣，网传 M6 车型“预制车”铭牌系 P 图伪造，实际制造年月为 2026 年 7 月。目前警方已介入，坚决追究造谣者责任。#问界辟谣预制车# 提醒大家不信谣不传谣。",
+      "category": "动态跟踪",
+      "sentiment": "neutral",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/998/592.htm",
+      "keywords": [
+        "问界",
+        "M6"
+      ],
+      "impactScope": "品牌热度、用户关注、后续跟踪",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 AITO 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
+    {
       "id": "auto-brand-20260902-news-c",
       "publishedAt": "2026-09-02T15:25:53+08:00",
       "capturedAt": "2026-09-02T18:34:46+08:00",
