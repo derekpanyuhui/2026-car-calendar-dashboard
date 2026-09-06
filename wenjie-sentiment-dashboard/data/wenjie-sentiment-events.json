@@ -1,13 +1,39 @@
 {
   "meta": {
     "title": "问界汽车舆情看板",
-    "updatedAt": "2026-09-05T23:41:36+08:00",
+    "updatedAt": "2026-09-06T14:27:19+08:00",
     "updateFrequency": "建议每日 09:30 / 14:00 / 21:00 巡检，重大争议事件即时增量更新",
     "sourcePolicy": "品牌官方 > 合作方官方 > 权威媒体 > 行业媒体",
     "scope": "覆盖问界品牌、问界 M5、问界 M6、问界 M7、问界 M8、问界 M9；仅保留能回链到具体正文页、具体声明页或单篇活动页的真实事件。",
     "version": "2026.04.02-live-discovery-v5"
   },
   "events": [
+    {
+      "id": "auto-brand-20260906-ithome-860",
+      "publishedAt": "2026-09-06T07:45:12+08:00",
+      "capturedAt": "2026-09-06T14:26:46+08:00",
+      "entity": "brand",
+      "model": "问界品牌",
+      "title": "赛力斯张兴海谈问界 7 天 7000 多公里极限实测，称路程 95% 以上由智能辅助驾驶完成",
+      "summary": "今年 8 月 18 日，赛力斯集团宣布，问界全系车型于祖国西极出发抵达上海滴水湖，行业率先使用在售量产车型进行全场景体验，7 天 7000 多公里极限实测。张兴海在报道中透露，7 天超 7000 公里的路程 95% 以上由智能辅助驾驶完成。#问界汽车#",
+      "category": "动态跟踪",
+      "sentiment": "neutral",
+      "riskLevel": "low",
+      "riskReason": "当前内容更偏新品、交付、合作或口碑背书，自动归类为低风险待复核事件。 来源主体为IT之家，建议人工确认最终定性。",
+      "sourceType": "media",
+      "sourceTier": "行业媒体",
+      "sourceName": "IT之家",
+      "publisher": "IT之家",
+      "url": "https://www.ithome.com/0/998/860.htm",
+      "keywords": [
+        "问界",
+        "赛力斯"
+      ],
+      "impactScope": "品牌热度、用户关注、后续跟踪",
+      "status": "pending-review",
+      "traceability": "自动发现：IT之家 问界 标签页 -> 直达原始正文页；建议人工复核标签、摘要与风险等级。",
+      "suggestedAction": "建议人工复核事件分类、情绪方向与风险等级，如为持续议题可补充后续跟进稿或官方回应。"
+    },
     {
       "id": "auto-brand-20260904-ithome-592",
       "publishedAt": "2026-09-04T20:34:45+08:00",
